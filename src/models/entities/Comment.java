@@ -7,7 +7,7 @@ import models.Validators;
 
 public class Comment {
 
-	private int id;
+	private long id;
 
 	private String content;
 
@@ -45,7 +45,7 @@ public class Comment {
 		this.date = date;
 	}
 
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 
