@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import exceptions.AlreadyExistException;
@@ -12,6 +13,7 @@ import exceptions.ValidationException;
 import models.DBInterfaces.IBookDAO;
 import models.entities.Author;
 import models.entities.Book;
+import models.entities.comments.Comment;
 
 public class BookDAO extends DAO implements IBookDAO {
 
@@ -28,9 +30,9 @@ public class BookDAO extends DAO implements IBookDAO {
 		return instance;
 	}
 
-	public void addBook(Book book, long authorId, long categoryId) throws SQLException, AlreadyExistException {
+	public void addBook(Book book, long authorId, long categoryId) throws SQLException, AlreadyExistException, ValidationException {
 		
-		if(this.isExist(book.getTitle(), authorId)){
+		if(this.exist(book.getTitle(), authorId)){
 			throw new AlreadyExistException("This book already exist");
 		}
 
@@ -72,17 +74,28 @@ public class BookDAO extends DAO implements IBookDAO {
 		String description = result.getString("description");
 		String publisher = result.getString("publisher");
 		int year = result.getInt("year");
+		//String photo = result.getString("photo");
 		double price = result.getDouble("price");
 		String category = CategoryDAO.getInstance().getCategory(result.getLong("categories_category_id"));
+		List<Comment> comments = CommentDAO.getInstance().getAllComments(id);
 
-		return new Book(id, title, author, description, year, publisher, price, category);
+		return new Book(id, title, author, description, year, publisher, price, category, comments);
 	}
 	
 	public Set<Book> getAll() throws SQLException, UnexistingException, ValidationException{
-		Set<Book> books = new HashSet<>();
-		
+			
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT book_id FROM books");
 		ResultSet restult = ps.executeQuery();
+		
+		return getBooksFromResult(restult);
+	}
+	
+	
+
+	private Set<Book> getBooksFromResult(ResultSet restult)
+			throws SQLException, UnexistingException, ValidationException {
+		
+		Set<Book> books = new HashSet<>();
 		
 		while (restult.next()) {
 			
@@ -94,7 +107,7 @@ public class BookDAO extends DAO implements IBookDAO {
 		return books;
 	}
 	
-	public boolean isExist(String title, long authorId) throws SQLException{
+	public boolean exist(String title, long authorId) throws SQLException, ValidationException{
 		
 		try {
 			Author author = AuthorDAO.getInstance().getAuthor(authorId);

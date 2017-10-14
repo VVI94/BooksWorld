@@ -11,13 +11,13 @@ public class Author {
 
 	private String lastName;
 
-	public Author(String firstName, String laststName) {
+	public Author(String firstName, String laststName) throws ValidationException {
 
-		this.firstName = firstName;
-		this.lastName = laststName;
+		this.setFirstName(firstName);
+		this.setLaststName(laststName);
 	}
 
-	public Author(long id, String firstName, String laststName) {
+	public Author(long id, String firstName, String laststName) throws ValidationException {
 		this(firstName, laststName);
 		this.id = id;
 		
@@ -27,7 +27,7 @@ public class Author {
 		return this.firstName;
 	}
 
-	public void setFirstName(String firstName) throws ValidationException {
+	private void setFirstName(String firstName) throws ValidationException {
 
 		Validators.vlidateInputForNull("first name", firstName);
 
@@ -38,7 +38,7 @@ public class Author {
 		return this.lastName;
 	}
 
-	public void setLaststName(String laststName) throws ValidationException {
+	private void setLaststName(String laststName) throws ValidationException {
 
 		Validators.vlidateInputForNull("last name", laststName);
 

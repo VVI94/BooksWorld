@@ -14,6 +14,6 @@ public interface ICategoryDAO {
 
 	void removeCategory(long id) throws SQLException;
 
-	boolean isExist(String category) throws SQLException;
+	boolean exist(String category) throws SQLException;
 
 }

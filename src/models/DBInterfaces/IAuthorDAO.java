@@ -3,6 +3,7 @@ package models.DBInterfaces;
 import java.sql.SQLException;
 
 import exceptions.UnexistingException;
+import exceptions.ValidationException;
 import models.entities.Author;
 
 public interface IAuthorDAO {
@@ -13,6 +14,6 @@ public interface IAuthorDAO {
 
 	long getAuthorId(String firstName, String lastName) throws SQLException, UnexistingException;
 
-	Author getAuthor(long authorId) throws SQLException, UnexistingException;
+	Author getAuthor(long authorId) throws SQLException, UnexistingException, ValidationException;
 
 }

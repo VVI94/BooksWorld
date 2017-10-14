@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import exceptions.UnexistingException;
+import exceptions.ValidationException;
 import models.DBInterfaces.IAuthorDAO;
 import models.entities.Author;
 
@@ -23,9 +24,6 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 		return instance;
 	}
 	
-	/* (non-Javadoc)
-	 * @see models.DBmodels.IAuthorDAO#addAuthor(models.entities.Author)
-	 */
 	@Override
 	public long addAuthor(Author author) throws SQLException{
 		
@@ -46,9 +44,6 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see models.DBmodels.IAuthorDAO#removeAuthor(long)
-	 */
 	@Override
 	public void removeAuthor(long authorId) throws SQLException{
 		this.getCon().setAutoCommit(false);
@@ -65,9 +60,6 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 		this.getCon().setAutoCommit(true);
 	}
 	
-	/* (non-Javadoc)
-	 * @see models.DBmodels.IAuthorDAO#getAuthorId(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public long getAuthorId(String firstName, String lastName) throws SQLException, UnexistingException{
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT author_id FROM authors"
@@ -85,11 +77,8 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 		return result.getLong("author_id");
 	}
 	
-	/* (non-Javadoc)
-	 * @see models.DBmodels.IAuthorDAO#getAuthor(long)
-	 */
 	@Override
-	public Author getAuthor(long authorId) throws SQLException, UnexistingException{
+	public Author getAuthor(long authorId) throws SQLException, UnexistingException, ValidationException{
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT * FROM authors WHERE author_id = ?");
 		ps.setLong(1, authorId);
 		
