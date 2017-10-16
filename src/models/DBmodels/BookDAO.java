@@ -53,10 +53,25 @@ public class BookDAO extends DAO implements IBookDAO {
 
 	}
 
-	public void removeBook(long bookId) throws SQLException {
+	public void removeBook(long bookId) throws SQLException, UnexistingException, ValidationException {
+		
+		
+		this.removeComments(bookId);
+		
 		PreparedStatement ps = this.getCon().prepareStatement("DELETE FROM books WHERE book_id = ?");
 		ps.setLong(1, bookId);
 		ps.executeUpdate();
+		
+
+	}
+
+	private void removeComments(long bookId) throws SQLException, UnexistingException, ValidationException {
+		Book book = this.getBook(bookId);
+		
+		for (Comment comment : book.getComments()) {
+			CommentDAO.getInstance().delete(comment.getId());
+		}
+		
 	}
 
 	public Book getBook(long bookId) throws SQLException, UnexistingException, ValidationException {
@@ -74,6 +89,7 @@ public class BookDAO extends DAO implements IBookDAO {
 		String description = result.getString("description");
 		String publisher = result.getString("publisher");
 		int year = result.getInt("year");
+		//TODO photo
 		//String photo = result.getString("photo");
 		double price = result.getDouble("price");
 		String category = CategoryDAO.getInstance().getCategory(result.getLong("categories_category_id"));

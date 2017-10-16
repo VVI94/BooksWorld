@@ -12,7 +12,7 @@ public interface IBookDAO {
 
 	void addBook(Book book, long authorId, long categoryId) throws SQLException, AlreadyExistException, ValidationException ;
 	
-	void removeBook(long bookId) throws SQLException;
+	void removeBook(long bookId) throws SQLException, UnexistingException, ValidationException;
 	
 	Book getBook(long bookId) throws SQLException, UnexistingException, ValidationException;
 	
