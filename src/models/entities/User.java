@@ -1,6 +1,5 @@
 package models.entities;
 
-<<<<<<< HEAD
 import exceptions.ValidationException;
 import models.Validators;
 
@@ -120,14 +119,4 @@ public class User {
 		if(Validators.validateStrings(telephone, TELEPHONE_MIN_LENGTH, message))
 		this.telephone = telephone;
 	}
-	
-	
-	
-	
-	
-	
-=======
-public class User {
-
->>>>>>> b20dffc0791d264f32b9c36da1a1334f797cafc5
 }
