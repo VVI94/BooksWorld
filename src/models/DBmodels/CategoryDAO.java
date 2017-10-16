@@ -23,12 +23,9 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 		return instance;
 	}
 
-	/* (non-Javadoc)
-	 * @see models.DBmodels.ICategoryDAO#addCategory(java.lang.String)
-	 */
 	@Override
 	public long addCategory(String category) throws SQLException{
-		if(this.isExist(category)){
+		if(this.exist(category)){
 			return this.getId(category);
 		}
 		
@@ -43,9 +40,6 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 		return id.getLong(1);
 	}
 
-	/* (non-Javadoc)
-	 * @see models.DBmodels.ICategoryDAO#getId(java.lang.String)
-	 */
 	@Override
 	public long getId(String category) throws SQLException {
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT category_id FROM categories "
@@ -60,9 +54,6 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 		return result.getLong(1);
 	}
 
-	/* (non-Javadoc)
-	 * @see models.DBmodels.ICategoryDAO#getCategory(long)
-	 */
 	@Override
 	public String getCategory(long id) throws SQLException, UnexistingException{
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT category_name FROM categories "
@@ -77,9 +68,6 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 		return result.getString(1);
 	}
 	
-	/* (non-Javadoc)
-	 * @see models.DBmodels.ICategoryDAO#removeCategory(long)
-	 */
 	@Override
 	public void removeCategory(long id) throws SQLException{
 		
@@ -99,11 +87,8 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see models.DBmodels.ICategoryDAO#isExist(java.lang.String)
-	 */
 	@Override
-	public boolean isExist(String category) throws SQLException {
+	public boolean exist(String category) throws SQLException {
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT * FROM categories WHERE category_name = ?");
 
 		ps.setString(1, category);

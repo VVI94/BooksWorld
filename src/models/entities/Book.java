@@ -1,7 +1,11 @@
 package models.entities;
 
+import java.util.Collections;
+import java.util.List;
+
 import exceptions.ValidationException;
 import models.Validators;
+import models.entities.comments.Comment;
 
 public class Book {
 
@@ -12,25 +16,56 @@ public class Book {
 	private int year;
 	private String publisher;
 	private double price;
+	// private String photo;
 	private String category;
 
-	public Book(String title, Author author, String description, int year, String publisher, double price,
-			String category) throws ValidationException {
+	private List<Comment> comments;
+
+	public Book(String title, String description, int year, String publisher, double price) throws ValidationException {
 
 		this.setTitle(title);
-		this.setAuthor(author);
 		this.setDescription(description);
 		this.setYear(year);
 		this.setPublisher(publisher);
 		this.setPrice(price);
-		this.setCategory(category);
+		// this.setPhoto(photo);
+
 	}
 
 	public Book(long id, String title, Author author, String description, int year, String publisher, double price,
-			String category) throws ValidationException {
-		this(title, author, description, year, publisher, price, category);
+			String category, List<Comment> comments) throws ValidationException {
+		this(title, description, year, publisher, price);
 		this.id = id;
+		this.setCategory(category);
+		this.setAuthor(author);
+		this.setComments(comments);
 	}
+	
+	
+	public List<Comment> getComments() {
+		return Collections.unmodifiableList(this.comments);
+	}
+
+	private void setComments(List<Comment> comments) throws ValidationException {
+		Validators.vlidateInputForNull("comments", comments);
+
+		this.comments = comments;
+	}
+	
+	
+	
+
+	// public String getPhoto(){
+	// return this.photo;
+	// }
+	//
+	// private void setPhoto(String photo) throws ValidationException {
+	// Validators.vlidateInputForNull("photo", photo);
+	//
+	// this.photo = photo;
+	// }
+
+	
 
 	public long getId() {
 		return this.id;
@@ -40,7 +75,7 @@ public class Book {
 		return this.title;
 	}
 
-	public void setTitle(String title) throws ValidationException {
+	private void setTitle(String title) throws ValidationException {
 
 		Validators.vlidateInputForNull("title", title);
 
@@ -51,7 +86,7 @@ public class Book {
 		return this.author;
 	}
 
-	public void setAuthor(Author author) throws ValidationException {
+	private void setAuthor(Author author) throws ValidationException {
 
 		Validators.vlidateInputForNull("author", author);
 
@@ -62,7 +97,7 @@ public class Book {
 		return this.description;
 	}
 
-	public void setDescription(String description) throws ValidationException {
+	private void setDescription(String description) throws ValidationException {
 
 		Validators.vlidateInputForNull("description", description);
 
@@ -73,7 +108,7 @@ public class Book {
 		return this.year;
 	}
 
-	public void setYear(int year) throws ValidationException {
+	private void setYear(int year) throws ValidationException {
 
 		if (year < 0) {
 			throw new ValidationException("Invalid year!");
@@ -85,7 +120,7 @@ public class Book {
 		return this.publisher;
 	}
 
-	public void setPublisher(String publisher) throws ValidationException {
+	private void setPublisher(String publisher) throws ValidationException {
 
 		Validators.vlidateInputForNull("publisher", publisher);
 
@@ -97,7 +132,7 @@ public class Book {
 		return this.price;
 	}
 
-	public void setPrice(double price) throws ValidationException {
+	private void setPrice(double price) throws ValidationException {
 
 		if (this.price < 0) {
 			throw new ValidationException("Invalid price!");
@@ -110,7 +145,7 @@ public class Book {
 		return this.category;
 	}
 
-	public void setCategory(String category) throws ValidationException {
+	private void setCategory(String category) throws ValidationException {
 
 		Validators.vlidateInputForNull("category", category);
 

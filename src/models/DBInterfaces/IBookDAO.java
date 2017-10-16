@@ -10,7 +10,7 @@ import models.entities.Book;
 
 public interface IBookDAO {
 
-	void addBook(Book book, long authorId, long categoryId) throws SQLException, AlreadyExistException ;
+	void addBook(Book book, long authorId, long categoryId) throws SQLException, AlreadyExistException, ValidationException ;
 	
 	void removeBook(long bookId) throws SQLException;
 	
@@ -18,5 +18,5 @@ public interface IBookDAO {
 	
 	Set<Book> getAll() throws SQLException, UnexistingException, ValidationException;
 	
-	boolean isExist(String title, long authorId) throws SQLException;
+	boolean exist(String title, long authorId) throws SQLException, ValidationException;
 }

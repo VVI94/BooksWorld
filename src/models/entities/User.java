@@ -1,5 +1,6 @@
 package models.entities;
 
+<<<<<<< HEAD
 import exceptions.ValidationException;
 import models.Validators;
 
@@ -125,4 +126,8 @@ public class User {
 	
 	
 	
+=======
+public class User {
+
+>>>>>>> b20dffc0791d264f32b9c36da1a1334f797cafc5
 }
