@@ -57,4 +57,10 @@ public class Reply {
 	public long getId() {
 		return this.id;
 	}
+
+	public User getUser() {
+		return user;
+	}
+	
+	
 }

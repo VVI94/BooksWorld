@@ -16,28 +16,28 @@ public class Book {
 	private int year;
 	private String publisher;
 	private double price;
-	// private String photo;
+	private String photo;
 	private String category;
 
 	private List<Comment> comments;
 
-	public Book(String title, String description, int year, String publisher, double price) throws ValidationException {
+	public Book(String title, String description, int year, String publisher, double price, String category, Author author, String photo) throws ValidationException {
 
 		this.setTitle(title);
 		this.setDescription(description);
 		this.setYear(year);
 		this.setPublisher(publisher);
 		this.setPrice(price);
-		// this.setPhoto(photo);
+		this.setCategory(category);
+		this.setAuthor(author);
+		this.setPhoto(photo);
 
 	}
 
 	public Book(long id, String title, Author author, String description, int year, String publisher, double price,
-			String category, List<Comment> comments) throws ValidationException {
-		this(title, description, year, publisher, price);
+			String category, List<Comment> comments, String photo) throws ValidationException {
+		this(title, description, year, publisher, price, category, author, photo);
 		this.id = id;
-		this.setCategory(category);
-		this.setAuthor(author);
 		this.setComments(comments);
 	}
 	
@@ -55,15 +55,15 @@ public class Book {
 	
 	
 
-	// public String getPhoto(){
-	// return this.photo;
-	// }
-	//
-	// private void setPhoto(String photo) throws ValidationException {
-	// Validators.vlidateInputForNull("photo", photo);
-	//
-	// this.photo = photo;
-	// }
+	 public String getPhoto(){
+	 return this.photo;
+	 }
+	
+	 private void setPhoto(String photo) throws ValidationException {
+	 Validators.vlidateInputForNull("photo", photo);
+	
+	 this.photo = photo;
+	 }
 
 	
 

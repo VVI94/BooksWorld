@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import exceptions.UnexistingException;
 import models.DBInterfaces.IFavouriteBooksDAO;
 import models.entities.FavouriteBooks;
-import models.entities.Order;
 
 public class FavouriteBooksDAO extends DAO implements IFavouriteBooksDAO {
 

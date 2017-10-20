@@ -11,6 +11,8 @@ public class User {
 	private static final int NAME_MIN_LENGTH = 3;
 	private static final int EMAIL_MIN_LENGTH = 10;
 	private static final int TELEPHONE_MIN_LENGTH = 10;
+	
+	
 	private long id;
 	private String username;
 	private String address;
@@ -20,6 +22,8 @@ public class User {
 	private String email;
 	private String telephone;
 	private Role role;
+	
+	
 	
 	public User(String username, String address, String password, String firstname, String lastname, String email,
 			String telephone, Role role) throws ValidationException {

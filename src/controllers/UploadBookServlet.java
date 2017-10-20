@@ -1,29 +1,33 @@
 package controllers;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import exceptions.AlreadyExistException;
 import exceptions.ValidationException;
-import models.DBmodels.AuthorDAO;
 import models.DBmodels.BookDAO;
-import models.DBmodels.CategoryDAO;
 import models.entities.Author;
 import models.entities.Book;
 
 @WebServlet("/UploadBook")
+@MultipartConfig
 public class UploadBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	 public UploadBookServlet() {
-	        super();
-	    }
+	
+	public static final String BOOK_IMAGE_URL ="E:/Final Project Workspace/BooksWorld/WebContent/images/";
+
  
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -32,54 +36,48 @@ public class UploadBookServlet extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("year"));
 		String publisher = request.getParameter("publisher");
 		double price = Double.parseDouble(request.getParameter("price"));
-		
-		
-		Book book = null;
-		try {
-			book = new Book(title, description, year, publisher, price);
-		} catch (ValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		String category =request.getParameter("category");		
 		String firstName = request.getParameter("firstName");
-		String lastName =  request.getParameter("lastName");
+		String lastName =  request.getParameter("lastName");		
+		Part photo = request.getPart("image");
+		
+		File myFile = new File(BOOK_IMAGE_URL + title + firstName + lastName + ".jpg");
+		
+		try (InputStream input = photo.getInputStream()) {
+		    Files.copy(input, myFile.toPath());
+		}
 		
 		Author author = null;
 		try {
 			author = new Author(firstName, lastName);
 		} catch (ValidationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println(e1.getMessage());
 		}
 		
-		long authorId = 0;
+		String image = title + firstName + lastName + ".jpg";
+		Book book = null;
 		try {
-			authorId = AuthorDAO.getInstance().addAuthor(author);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		String category =request.getParameter("category");
-		
-		long categoryId = 0;
-		try {
-			categoryId = CategoryDAO.getInstance().addCategory(category);
-		} catch (SQLException e) {
+			book = new Book(title, description, year, publisher, price, category, author, image);
+		} catch (ValidationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+							
 		try {
-			BookDAO.getInstance().addBook(book, authorId, categoryId);
+			BookDAO.getInstance().addBook(book);
 		} catch (SQLException | AlreadyExistException | ValidationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		
-		response.sendRedirect("a.jsp");
+		response.sendRedirect("./");
 		
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("view", "bookRegister.html");
+		request.getRequestDispatcher("base-layout.jsp").forward(request, response);
 	}
 
 }

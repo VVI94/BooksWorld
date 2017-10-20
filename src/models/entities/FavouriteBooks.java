@@ -5,6 +5,8 @@ public class FavouriteBooks {
 	private long users_user_id;
 	private long users_id;
 	
+	
+	
 	public FavouriteBooks(long users_user_id, long users_id) {
 		this.users_user_id = users_user_id;
 		this.users_id = users_id;

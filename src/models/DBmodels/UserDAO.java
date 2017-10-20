@@ -34,9 +34,11 @@ public class UserDAO extends DAO implements IUserDAO {
 		} catch (UnexistingException e) {
 
 			PreparedStatement ps = this.getCon().prepareStatement(
-					"INSERT INTO users(username, address, password, first_name, last_name, email, telephone, roles_id)"
+					"INSERT INTO users(username, address, password, first_name, last_name, email, telephone, roles_role_id)"
 							+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
 					PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getAddress());
 			ps.setString(3, user.getPassword());
@@ -61,12 +63,12 @@ public class UserDAO extends DAO implements IUserDAO {
 		ps.executeUpdate();
 
 		PreparedStatement ps1 = this.getCon().prepareStatement("DELETE FROM orders WHERE users_user_id = ?");
-		ps.setLong(1, userId);
-		ps.executeUpdate();
-
-		PreparedStatement ps3 = this.getCon().prepareStatement("DELETE FROM users WHERE user_id = ?");
 		ps1.setLong(1, userId);
 		ps1.executeUpdate();
+
+		PreparedStatement ps2 = this.getCon().prepareStatement("DELETE FROM users WHERE user_id = ?");
+		ps2.setLong(1, userId);
+		ps2.executeUpdate();
 
 		this.getCon().commit();
 
@@ -104,7 +106,7 @@ public class UserDAO extends DAO implements IUserDAO {
 		if(!result.next()){
 			throw new UnexistingException("User with id: " + userId + " doesn't exist!");
 		}
-		Role role = RoleDAO.getInstance().getRole(result.getLong("role_id"));
+		Role role = RoleDAO.getInstance().getRole(result.getLong("roles_role_id"));
 		
 		return new User(userId, result.getString("username"), result.getString("address"),result.getString("password"), result.getString("first_name"), result.getString("last_name"), result.getString("email"),  result.getString("telephone"),role );
 	}

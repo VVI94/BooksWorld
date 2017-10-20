@@ -58,7 +58,7 @@ public class RoleDAO extends DAO implements IRoleDAO {
 
 	@Override
 	public Role getRole(long id) throws SQLException, UnexistingException {
-		PreparedStatement ps = this.getCon().prepareStatement("SELECT role FROM roles " + "WHERE id = ?");
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT role FROM roles " + "WHERE role_id = ?");
 
 		ps.setLong(1, id);
 		ResultSet result = ps.executeQuery();

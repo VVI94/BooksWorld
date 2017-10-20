@@ -46,18 +46,33 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 	
 	@Override
 	public void removeAuthor(long authorId) throws SQLException{
+		
+		boolean isInTransaction = false;
+
+		if (!this.getCon().getAutoCommit()) {
+			isInTransaction = true;
+		}
+		
+		try{
 		this.getCon().setAutoCommit(false);
-		PreparedStatement ps = this.getCon().prepareStatement("DELETE FROM books WHERE authors_author_id = ?");
-		ps.setLong(1, authorId);
-		ps.executeUpdate();
+	
+		for (Long bookId : BookDAO.getInstance().getBookIDsByAuthor(authorId)) {
+			BookDAO.getInstance().removeBook(bookId);
+		}
 		
 		PreparedStatement ps1 = this.getCon().prepareStatement("DELETE FROM authors WHERE author_id = ?");
 		ps1.setLong(1, authorId);
 		ps1.executeUpdate();
+		}catch (SQLException e) {
+			this.getCon().rollback();
+			throw new SQLException("Can't remove this author",e);
+		}finally {			
+			if(!isInTransaction){
+				this.getCon().commit();				
+				this.getCon().setAutoCommit(true);
+			}
+		}
 		
-		this.getCon().commit();
-		
-		this.getCon().setAutoCommit(true);
 	}
 	
 	@Override
