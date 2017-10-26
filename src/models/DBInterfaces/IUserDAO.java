@@ -16,4 +16,6 @@ void removeUser(long userId)throws SQLException;
 long getUserID(String username, String email, String fisrtname, String lastname) throws ValidationException, SQLException, UnexistingException;
 
 User getUser(long userId) throws ValidationException, SQLException, UnexistingException;
+
+boolean userExists (String username, String password) throws UnexistingException, SQLException;
 }

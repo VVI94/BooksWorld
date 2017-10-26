@@ -111,4 +111,20 @@ public class UserDAO extends DAO implements IUserDAO {
 		return new User(userId, result.getString("username"), result.getString("address"),result.getString("password"), result.getString("first_name"), result.getString("last_name"), result.getString("email"),  result.getString("telephone"),role );
 	}
 
+	@Override
+	public boolean userExists(String username, String password) throws UnexistingException, SQLException {
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
+		ps.setString(1, username);
+		ps.setString(2, password);
+		
+		ResultSet result = ps.executeQuery();
+		boolean exists = true;
+		
+		if(!result.next()){
+			exists = false;
+			throw new UnexistingException("User with " + username + " or password doesn't exist!");
+		}
+		return exists;
+	}
+
 }
