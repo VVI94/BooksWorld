@@ -1,5 +1,6 @@
 package models.DBmodels;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import controllers.UploadBookServlet;
 import exceptions.AlreadyExistException;
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
@@ -92,6 +94,8 @@ public class BookDAO extends DAO implements IBookDAO {
 			this.getCon().setAutoCommit(false);
 
 			this.removeComments(bookId);
+			
+			this.deleteAvatar(bookId);
 
 			PreparedStatement ps = this.getCon().prepareStatement("DELETE FROM books WHERE book_id = ?");
 			ps.setLong(1, bookId);
@@ -220,6 +224,18 @@ public class BookDAO extends DAO implements IBookDAO {
 		}
 
 		return ids;
+	}
+	
+	private void deleteAvatar(long bookId) throws SQLException{
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT photo FROM books WHERE book_id = ?");
+		ps.setLong(1, bookId);
+		ResultSet result = ps.executeQuery();
+		
+		result.next();
+		String photoName = result.getString("photo");
+		
+		File avatar = new File(UploadBookServlet.BOOK_IMAGE_URL + photoName);
+		avatar.delete();
 	}
 
 }

@@ -41,7 +41,8 @@ public class UploadBookServlet extends HttpServlet {
 		String lastName =  request.getParameter("lastName");		
 		Part photo = request.getPart("image");
 		
-		File myFile = new File(BOOK_IMAGE_URL + title + firstName + lastName + ".jpg");
+		String image = title +"_"+ firstName +"_"+ lastName + ".jpg";
+		File myFile = new File(BOOK_IMAGE_URL + image);
 		
 		try (InputStream input = photo.getInputStream()) {
 		    Files.copy(input, myFile.toPath());
@@ -54,7 +55,7 @@ public class UploadBookServlet extends HttpServlet {
 			System.out.println(e1.getMessage());
 		}
 		
-		String image = title + firstName + lastName + ".jpg";
+		
 		Book book = null;
 		try {
 			book = new Book(title, description, year, publisher, price, category, author, image);

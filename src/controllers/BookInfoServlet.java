@@ -23,13 +23,16 @@ public class BookInfoServlet extends HttpServlet {
 		Book book = null;
 		try {
 			book = BookDAO.getInstance().getBook(Long.parseLong(id));
+			
+			request.setAttribute("book", book);
+			request.setAttribute("view", "BookDescription.jsp");
+			request.getRequestDispatcher("base-layout.jsp").forward(request, response);
+			
 		} catch (NumberFormatException | SQLException | UnexistingException | ValidationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		request.setAttribute("book", book);
-		request.setAttribute("view", "BookDescription.jsp");
-		request.getRequestDispatcher("base-layout.jsp").forward(request, response);
+
 	}
 
 
