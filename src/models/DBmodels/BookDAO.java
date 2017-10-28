@@ -137,10 +137,9 @@ public class BookDAO extends DAO implements IBookDAO {
 		String description = result.getString("description");
 		String publisher = result.getString("publisher");
 		int year = result.getInt("year");
-		// TODO photo
 		String photo = result.getString("photo");
 		double price = result.getDouble("price");
-		String category = CategoryDAO.getInstance().getCategory(result.getLong("categories_category_id"));
+		String category = CategoryDAO.getInstance().getCategory(result.getLong("categories_category_id"));	
 		List<Comment> comments = CommentDAO.getInstance().getAllComments(id);
 
 		return new Book(id, title, author, description, year, publisher, price, category, comments, photo);
@@ -224,7 +223,7 @@ public class BookDAO extends DAO implements IBookDAO {
 		}
 
 		return ids;
-	}
+	}	
 	
 	private void deleteAvatar(long bookId) throws SQLException{
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT photo FROM books WHERE book_id = ?");

@@ -19,6 +19,7 @@ public class Book {
 	private String photo;
 	private String category;
 
+
 	private List<Comment> comments;
 
 	public Book(String title, String description, int year, String publisher, double price, String category, Author author, String photo) throws ValidationException {
@@ -144,7 +145,8 @@ public class Book {
 	public String getCategory() {
 		return this.category;
 	}
-
+	
+	
 	private void setCategory(String category) throws ValidationException {
 
 		Validators.vlidateInputForNull("category", category);

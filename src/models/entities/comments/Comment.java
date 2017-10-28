@@ -18,8 +18,8 @@ public class Comment extends Reply{
 		super(content, date);
 	}
 	
-	public Comment(long id, String content, Timestamp date, User user, List<Reply> replyComments) throws ValidationException {
-		super(id, content, date, user);
+	public Comment(long id, String content, Timestamp date, User user, List<Reply> replyComments, int likes, int dislikes) throws ValidationException {
+		super(id, content, date, user, likes, dislikes);
 		this.setReplyComments(replyComments);
 	}
 	

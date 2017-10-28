@@ -66,12 +66,20 @@
 								</div>
 		      		
 		      				</c:if>
-						    <div id ="bloc2" class="stats" align="right">   		
-		                        <a href="#">
-		                            <img alt="like" width="50 px" height="40 px" src="images/static/like.jpg"><span class="badge">2</span>
+						    <div id ="bloc2" class="stats" align="right">   
+		                        <a href="likes?type=like&commentId=<c:out value='${comment.id}'></c:out>&book=<c:out value ='${book.id}'></c:out>">
+		                            <img alt="like" width="50 px" height="40 px" 
+							        src="images/static/like.jpg">
+							        <c:if test="${comment.likes>0}">
+							        <sub><span class="badge"><c:out value='${comment.likes}'></c:out></span></sub>
+							        </c:if>
 		                        </a>
-		                        <a href="#">
-		                            <img alt="dislike" width="50 px" height="40 px" src="images/static/dislike.jpg"><span class="badge">12</span>
+		                        <a href="likes?type=<c:out value='dislike'></c:out>&commentId=<c:out value='${comment.id}'></c:out>&book=<c:out value ='${book.id}'></c:out>">
+		                            <img alt="dislike" width="50 px" height="40 px" 
+		                            src="images/static/dislike.jpg">
+							        <c:if test="${comment.dislikes>0}">
+							        <sub><span class="badge"><c:out value='${comment.dislikes}'></c:out></span></sub>
+		                       		</c:if>
 		                        </a>
 		                    </div>                    
 		                </div>
@@ -126,11 +134,19 @@
 											<div class="panel-body">
 												<c:out value="${reply.content}"></c:out>
 												<div  class="stats" align="right">   		
-							                        <a href="#">
-							                            <img alt="like" width="30 px" height="20 px" src="images/static/like.jpg"><span>2</span>
+							                        <a href="likes?type=like&commentId=<c:out value='${reply.id}'></c:out>&book=<c:out value='${book.id}'></c:out>">							                        	
+							                            <img alt="like" width="30 px" height="20 px" 
+							                            src="images/static/like.jpg">
+							                            <c:if test="${reply.likes>0}">
+							                            <span><sub><c:out value='${reply.likes}'></c:out></sub></span>
+							                            </c:if>
 							                        </a>
-							                        <a href="#">
-							                            <img alt="dislike" width="30 px" height="20 px" src="images/static/dislike.jpg"><span>12</span>
+							                        <a href="likes?type=dislike&commentId=<c:out value='${reply.id}'></c:out>&book=<c:out value='${book.id}'></c:out>">
+							                            <img alt="dislike" width="30 px" height="20 px" 							                            
+							                            src="images/static/dislike.jpg">
+							                            <c:if test="${reply.dislikes>0}">
+							                            <span><sub><c:out value='${reply.dislikes}'></c:out></sub></span>
+							                            </c:if>
 							                        </a>
 							                    </div> 												
 											</div>
