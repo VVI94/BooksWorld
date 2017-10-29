@@ -95,7 +95,7 @@ public class Book {
 	}
 
 	public String getDescription() {
-		return this.description;
+		return this.description.trim();
 	}
 
 	private void setDescription(String description) throws ValidationException {
@@ -144,6 +144,15 @@ public class Book {
 
 	public String getCategory() {
 		return this.category;
+	}
+	
+	
+	public String firstName(){
+		return this.author.getFirstName();
+	}
+	
+	public String lastName(){
+		return this.author.getLastName();
 	}
 	
 	

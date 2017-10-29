@@ -1,19 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset = UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <link type="text/css" rel="stylesheet" href= "css/style1.css"/> 
+<link type="text/css" rel="stylesheet" href= "css/raiting.css"/>  
 
  <div class="container body-content span=8 offset=2">
 
 	<div class="row">
 		
-		<div style="float: left;" class="col-md-6" align="center">
+		<div style="float: left;" class="col-md-6" >
+		
 			<article>
-				<header>
-				<c:out value="${book.title}"></c:out>
-				</header>					
-				<img height="650px" width="500px" src="avatar?book=<c:out value="${book.id}"></c:out>">
+				<div align="center">
+					<header>
+						<c:out value="${book.title}"></c:out>
+					</header>	
 							
+					<img height="650px" width="500px" src="avatar?book=<c:out value="${book.id}"></c:out>">
+				</div>	
+				<div align="center">
+				    <form>				     
+				       <div class="rating" >				        
+				            <input id="star5" name="star" type="radio" value="5" class="radio-btn hide" />
+				            <label for="star5">☆</label>
+				            <input id="star4" name="star" type="radio" value="4" class="radio-btn hide" />
+				            <label for="star4">☆</label>
+				            <input id="star3" name="star" type="radio" value="3" class="radio-btn hide" />
+				            <label for="star3">☆</label>
+				            <input id="star2" name="star" type="radio" value="2" class="radio-btn hide" />
+				            <label for="star2">☆</label>
+				            <input id="star1" name="star" type="radio" value="1" class="radio-btn hide" />
+				            <label for="star1">☆</label>
+				            <div class="clear"></div>
+				        </div>				        
+				    </form>					
+				</div>					
 			</article>
 		</div>
 				
@@ -221,11 +242,16 @@
 	</form>
 </div>
 		
-		
-<div class="container body-content" align="right" >
-	<form action="deleteBook" method="POST">
+	
+<div  align="right" >
+	<form id="bloc2" action="UploadBook">
+		<input type="hidden" name="bookId" value="${book.id}">	    
+	    <input type="submit" class="btn btn-primary" value="Edit"/>
+	</form>
+	<form id="bloc2" action="deleteBook" method="POST">
 		<input type="hidden" name="bookId" value="${book.id}">	    
 	    <input type="submit" class="btn btn-danger" value="Delete"/>
 	</form>
 </div>
+
 		

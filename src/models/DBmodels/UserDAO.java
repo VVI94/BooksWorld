@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
 import models.DBInterfaces.IUserDAO;
-import models.entities.Author;
 import models.entities.Role;
 import models.entities.User;
 

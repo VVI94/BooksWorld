@@ -20,7 +20,7 @@ import models.entities.comments.Comment;
 public class BookDAO extends DAO implements IBookDAO {
 
 	private static BookDAO instance;
-	
+
 	private BookDAO() {
 	}
 
@@ -33,7 +33,7 @@ public class BookDAO extends DAO implements IBookDAO {
 	}
 
 	public void addBook(Book book) throws SQLException, AlreadyExistException, ValidationException {
-	
+
 		boolean isInTransaction = false;
 
 		if (!this.getCon().getAutoCommit()) {
@@ -67,8 +67,6 @@ public class BookDAO extends DAO implements IBookDAO {
 			ps.setString(8, book.getPhoto());
 
 			ps.executeUpdate();
-			
-	
 
 		} catch (SQLException e) {
 
@@ -78,7 +76,7 @@ public class BookDAO extends DAO implements IBookDAO {
 				this.getCon().commit();
 				this.getCon().setAutoCommit(true);
 			}
-		}		
+		}
 
 	}
 
@@ -94,7 +92,7 @@ public class BookDAO extends DAO implements IBookDAO {
 			this.getCon().setAutoCommit(false);
 
 			this.removeComments(bookId);
-			
+
 			this.deleteAvatar(bookId);
 
 			PreparedStatement ps = this.getCon().prepareStatement("DELETE FROM books WHERE book_id = ?");
@@ -139,7 +137,7 @@ public class BookDAO extends DAO implements IBookDAO {
 		int year = result.getInt("year");
 		String photo = result.getString("photo");
 		double price = result.getDouble("price");
-		String category = CategoryDAO.getInstance().getCategory(result.getLong("categories_category_id"));	
+		String category = CategoryDAO.getInstance().getCategory(result.getLong("categories_category_id"));
 		List<Comment> comments = CommentDAO.getInstance().getAllComments(id);
 
 		return new Book(id, title, author, description, year, publisher, price, category, comments, photo);
@@ -180,7 +178,7 @@ public class BookDAO extends DAO implements IBookDAO {
 
 			ps.setString(1, title);
 			ps.setString(2, author.getFirstName());
-			ps.setString(3, author.getLaststName());
+			ps.setString(3, author.getLastName());
 
 			ResultSet result = ps.executeQuery();
 
@@ -207,13 +205,12 @@ public class BookDAO extends DAO implements IBookDAO {
 
 		return ids;
 	}
-	
+
 	public Set<Long> getBookIDsByAuthor(long authorId) throws SQLException {
 
 		Set<Long> ids = new HashSet<>();
 
-		PreparedStatement ps = this.getCon()
-				.prepareStatement("SELECT book_id  FROM books WHERE authors_author_id = ?");
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT book_id  FROM books WHERE authors_author_id = ?");
 		ps.setLong(1, authorId);
 		ResultSet result = ps.executeQuery();
 
@@ -223,18 +220,63 @@ public class BookDAO extends DAO implements IBookDAO {
 		}
 
 		return ids;
-	}	
-	
-	private void deleteAvatar(long bookId) throws SQLException{
+	}
+
+	private void deleteAvatar(long bookId) throws SQLException {
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT photo FROM books WHERE book_id = ?");
 		ps.setLong(1, bookId);
 		ResultSet result = ps.executeQuery();
-		
+
 		result.next();
 		String photoName = result.getString("photo");
-		
+
 		File avatar = new File(UploadBookServlet.BOOK_IMAGE_URL + photoName);
 		avatar.delete();
+	}
+
+	public void editBook(long bookId, Book book) throws SQLException {
+
+		boolean isInTransaction = false;
+
+		if (!this.getCon().getAutoCommit()) {
+			isInTransaction = true;
+		}
+
+		try {
+
+			this.getCon().setAutoCommit(false);
+			
+			long categoryId = CategoryDAO.getInstance().addCategory(book.getCategory());
+
+			long authorId = AuthorDAO.getInstance().addAuthor(book.getAuthor());
+
+			
+			PreparedStatement ps = this.getCon()
+					.prepareStatement("UPDATE books "
+							+ "SET title = ?, description = ?, year = ?, publisher = ?, price = ?, authors_author_id = ?,"
+							+ " categories_category_id = ?, photo = ? WHERE book_id = ?");
+
+			ps.setString(1, book.getTitle());
+			ps.setString(2, book.getDescription());
+			ps.setInt(3, book.getYear());
+			ps.setString(4, book.getPublisher());
+			ps.setDouble(5, book.getPrice());
+			ps.setLong(6, authorId);
+			ps.setLong(7, categoryId);
+			ps.setString(8, book.getPhoto());
+			ps.setLong(9, bookId);
+			
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new SQLException("Can't edit this book", e);
+		} finally {
+			if (!isInTransaction) {
+				this.getCon().commit();
+				this.getCon().setAutoCommit(true);
+			}
+		}
+
 	}
 
 }

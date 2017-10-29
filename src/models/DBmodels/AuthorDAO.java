@@ -28,14 +28,14 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 	public long addAuthor(Author author) throws SQLException{
 		
 		try {
-			return this.getAuthorId(author.getFirstName(), author.getLaststName());
+			return this.getAuthorId(author.getFirstName(), author.getLastName());
 		} catch (UnexistingException e) {
 			
 			PreparedStatement ps = this.getCon().prepareStatement("INSERT INTO authors(first_name, last_name)"
 												  + " VALUES(?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			ps.setString(1, author.getFirstName());
-			ps.setString(2, author.getLaststName());
+			ps.setString(2, author.getLastName());
 			ps.executeUpdate();
 			
 			ResultSet id = ps.getGeneratedKeys();

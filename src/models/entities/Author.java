@@ -14,7 +14,7 @@ public class Author {
 	public Author(String firstName, String laststName) throws ValidationException {
 
 		this.setFirstName(firstName);
-		this.setLaststName(laststName);
+		this.setLastName(laststName);
 	}
 
 	public Author(long id, String firstName, String laststName) throws ValidationException {
@@ -34,11 +34,11 @@ public class Author {
 		this.firstName = firstName;
 	}
 
-	public String getLaststName() {
+	public String getLastName() {
 		return this.lastName;
 	}
 
-	private void setLaststName(String laststName) throws ValidationException {
+	private void setLastName(String laststName) throws ValidationException {
 
 		Validators.vlidateInputForNull("last name", laststName);
 
