@@ -12,6 +12,7 @@ import exceptions.ValidationException;
 import models.entities.User;
 import models.entities.comments.Comment;
 import models.entities.comments.Reply;
+import models.enums.LikeType;
 
 public class CommentDAO extends DAO {
 
@@ -77,10 +78,11 @@ public class CommentDAO extends DAO {
 		Timestamp date = result.getTimestamp("date");
 		List<Reply> replies = this.getAllReplies(id);
 		long userId = result.getLong("users_user_id");
-
+		int likes = LikesDAO.getInstance().get(id, LikeType.LIKES);
+		int dislikes = LikesDAO.getInstance().get(id, LikeType.DISLIKES);
 		User user = UserDAO.getInstance().getUser(userId);
 
-		return new Comment(id, content, date, user, replies);
+		return new Comment(id, content, date, user, replies, likes, dislikes);
 	}
 
 	private List<Reply> getAllReplies(long commentId) throws SQLException, ValidationException, UnexistingException {
@@ -104,9 +106,10 @@ public class CommentDAO extends DAO {
 		String content = result.getString("content");
 		Timestamp date = result.getTimestamp("date");
 		long userId = result.getLong("users_user_id");
-
+		int likes = LikesDAO.getInstance().get(id, LikeType.LIKES);
+		int dislikes = LikesDAO.getInstance().get(id, LikeType.DISLIKES);
 		User user = UserDAO.getInstance().getUser(userId);
-		return new Reply(id, content, date, user);
+		return new Reply(id, content, date, user, likes, dislikes);
 	}
 
 	public void delete(long id) throws SQLException {
@@ -138,5 +141,5 @@ public class CommentDAO extends DAO {
 		}
 
 	}
-
+	
 }

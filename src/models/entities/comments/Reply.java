@@ -15,6 +15,9 @@ public class Reply {
 	
 	private User user;
 	
+	private int likes;
+	
+	private int dislikes;
 	
 	public Reply(String content, Timestamp date) throws ValidationException {
 
@@ -22,10 +25,12 @@ public class Reply {
 		this.setDate(date);
 	}
 	
-	public Reply(long id, String content, Timestamp date, User user) throws ValidationException {
+	public Reply(long id, String content, Timestamp date, User user, int likes, int dislikes) throws ValidationException {
 		this(content, date);
 		this.id = id;
 		this.user = user;
+		this.likes = likes;
+		this.dislikes = dislikes;
 	}
 
 	public String getContent() {
@@ -62,5 +67,12 @@ public class Reply {
 		return user;
 	}
 	
+	public int getLikes() {
+		return likes;
+	}
+
+	public int getDislikes() {
+		return dislikes;
+	}
 	
 }
