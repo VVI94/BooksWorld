@@ -3,7 +3,7 @@ package models.entities;
 import exceptions.ValidationException;
 import models.Validators;
 
-public class Author {
+public class Author implements Comparable<Author>{
 
 	private long id;
 
@@ -48,5 +48,15 @@ public class Author {
 	public long getId() {
 		return this.id;
 	}
+
+	@Override
+	public int compareTo(Author o) {
+		if(this.firstName.equals(o.firstName)){
+			return this.lastName.compareTo(o.lastName);
+		}
+		return this.firstName.compareTo(o.firstName);
+	}
+	
+	
 
 }

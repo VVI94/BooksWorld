@@ -1,6 +1,7 @@
 package models.DBInterfaces;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 import exceptions.UnexistingException;
 
@@ -15,5 +16,6 @@ public interface ICategoryDAO {
 	void removeCategory(long id) throws SQLException;
 
 	boolean exist(String category) throws SQLException;
-
+	
+	Map<String, Long> getAllCategories() throws SQLException;
 }

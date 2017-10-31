@@ -132,7 +132,7 @@ public class CommentDAO extends DAO {
 
 		} catch (SQLException e) {
 			this.getCon().rollback();
-			throw new SQLException("Can't add this comment");
+			throw new SQLException("Can't delete this comment");
 		} finally {
 			if (!isInTransaction) {
 				this.getCon().commit();

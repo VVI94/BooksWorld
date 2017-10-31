@@ -3,6 +3,9 @@ package models.DBmodels;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import exceptions.UnexistingException;
 import models.DBInterfaces.ICategoryDAO;
@@ -111,6 +114,24 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 		ResultSet result = ps.executeQuery();
 
 		return result.next();
+	}
+	
+	public Map<String, Long> getAllCategories() throws SQLException{
+		
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT * FROM categories");
+		
+		ResultSet result = ps.executeQuery();
+		
+		Map<String, Long> categories = new TreeMap<>();
+		while (result.next()) {
+			long id = result.getLong("category_id");
+			String name = result.getString("category_name");
+			
+			categories.put(name, id);
+			
+		}
+		
+		return categories;
 	}
 
 }
