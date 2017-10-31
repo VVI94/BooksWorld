@@ -2,6 +2,7 @@ package models.DBInterfaces;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.HashSet;
 
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
@@ -16,5 +17,7 @@ public interface IOrderDAO {
 	long getOrderId(Date date, long userId) throws SQLException, UnexistingException;
 
 	Order getOrder(long orderId) throws SQLException, UnexistingException, ValidationException;
+
+	HashSet<Order> getAllOrders();
 
 }

@@ -1,5 +1,7 @@
 package models.entities;
 
+import java.util.Set;
+
 import exceptions.ValidationException;
 import models.Validators;
 
@@ -15,39 +17,57 @@ public class User {
 	
 	private long id;
 	private String username;
-	private String address;
+	private String email;
 	private String password;
 	private String firstname;
 	private String lastname;
-	private String email;
+	private String address;
 	private String telephone;
-	private Role role;
+	private Long roleID;
+	private String userAvatar;
+	private Set<Order> orders;
 	
 	
 	
-	public User(String username, String address, String password, String firstname, String lastname, String email,
-			String telephone, Role role) throws ValidationException {
+	public User(String username, String password, String email, String firstname, String lastname, String address,
+			String telephone, String userAvatar) throws ValidationException {
 		setUsername(username);
-		setAddress(address);
 		setPassword(password);
+		setEmail(email);
 		setFirstname(firstname);
 		setLastname(lastname);
-		setEmail(email);
+		setAddress(address);		
 		setTelephone(telephone);
-		setRole(role);
-	}
-
-	private void setRole(Role role) throws ValidationException{
-		Validators.vlidateInputForNull("role", role);
-		this.role = role;
-		
+		setRoleID(1L); // means basic user, 2-> admin
+		setUserAvatar(userAvatar);
 		
 	}
+//	public User(long id, String username, String password, String email, String firstname, String lastname, String address,
+//			String telephone, String userAvatar) throws ValidationException {
+//		this(username, password,  email, firstname, lastname, address, telephone, userAvatar);
+//		setUserAvatar(userAvatar);
+//		this.id = id;
+//	}
 
-	public User(long id, String username, String address, String password, String firstname, String lastname,
-			String email, String telephone, Role role) throws ValidationException {
-		this(username, address, password, firstname, lastname, email, telephone,role);
+	public User(long id, String username, String password, String email, String firstname, String lastname, String address,
+			String telephone, String userAvatar) throws ValidationException {
+		this(username, password,  email, firstname, lastname, address, telephone, userAvatar);
 		this.id = id;
+	}
+	
+	public String getUserAvatar() {
+		return userAvatar;
+	}
+
+	public void setUserAvatar(String userAvatar) {
+		if(userAvatar.length() > 0)
+		this.userAvatar = userAvatar;
+		else
+			this.userAvatar = "C:/Users/Vasilena/Git_IT_Talents/pictures/default_user_avatar.jpg";
+	}
+
+	private void setRoleID(Long roleid) throws ValidationException{
+		this.roleID = roleid;		
 	}
 
 	public long getId() {
@@ -122,5 +142,8 @@ public class User {
 		String message = "telephone!";
 		if(Validators.validateStrings(telephone, TELEPHONE_MIN_LENGTH, message))
 		this.telephone = telephone;
+	}
+	public long getRoleID() {
+		return this.roleID;
 	}
 }

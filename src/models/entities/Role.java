@@ -2,20 +2,20 @@ package models.entities;
 
 public class Role {
 	private long id;
-	private String role;
+	private UserRole role;
 	
 	
-	public Role(String role) {
+	public Role(UserRole role) {
 		this.role = role;
 	}
-	public Role(long id, String role) {
+	public Role(long id, UserRole role) {
 		this(role);
 		this.id = id;
 	}
 	public long getId() {
 		return id;
 	}
-	public String getRoleName() {
+	public UserRole getRoleName() {
 		return role;
 	}
 	
