@@ -17,7 +17,7 @@ long getUserID(String username, String email, String fisrtname, String lastname)
 
 User getUser(String username) throws ValidationException, SQLException, UnexistingException;
 
-User getUser(Long userId) throws ValidationException, SQLException, UnexistingException;
+User getUser(long userId) throws ValidationException, SQLException, UnexistingException;
 
 boolean userExists (String username, String password) throws UnexistingException, SQLException;
 

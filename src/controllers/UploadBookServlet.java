@@ -17,6 +17,7 @@ import javax.servlet.http.Part;
 import exceptions.AlreadyExistException;
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
+import models.Validators;
 import models.DBmodels.BookDAO;
 import models.entities.Author;
 import models.entities.Book;
@@ -30,6 +31,10 @@ public class UploadBookServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		if(!Validators.isAuthenticated(request, response)){
+			return;
+		}
 
 		String title = request.getParameter("title");
 		String description = request.getParameter("description");
@@ -84,6 +89,11 @@ public class UploadBookServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		if(!Validators.isAuthenticated(request, response)){
+			return;
+		}
+		
 		Book book = null;
 		if (request.getParameter("bookId") != null) {
 			try {

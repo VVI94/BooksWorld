@@ -28,7 +28,7 @@ function change()
 						<c:out value="${book.title}"></c:out>
 					</header>	
 							
-					<img height="650px" width="500px" src="avatar?book=<c:out value="${book.id}"></c:out>">
+					<img height="650px" width="500px" src="avatar?photo=<c:out value="${book.photo}"></c:out>">
 				</div>	
 				<div align="center">
 				    <form>				     
@@ -78,7 +78,7 @@ function change()
 			            <div class="panel panel-white post panel-shadow">
 			                <div class="post-heading">
 			                    <div class="pull-left image">
-			                        <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
+			                        <img src="avatar?photo=<c:out value='${comment.user.userAvatar}'></c:out>" class="img-circle avatar" alt="user profile image">
 			                    </div>
 			                    <div class="pull-left meta">
 			                        <div class="title h5">
@@ -105,21 +105,36 @@ function change()
 									</div>
 			      		
 			      				</c:if>
-							    <div id ="bloc2" class="stats" align="right">   
-			                        <a href="likes?type=like&commentId=<c:out value='${comment.id}'></c:out>&book=<c:out value ='${book.id}'></c:out>">
-			                            <img alt="like" width="50 px" height="40 px" 
-								        src="images/static/like.jpg">
-								        <c:if test="${comment.likes>0}">
-								        <sub><span class="badge"><c:out value='${comment.likes}'></c:out></span></sub>
-								        </c:if>
-			                        </a>
-			                        <a href="likes?type=<c:out value='dislike'></c:out>&commentId=<c:out value='${comment.id}'></c:out>&book=<c:out value ='${book.id}'></c:out>">
-			                            <img alt="dislike" width="50 px" height="40 px" 
-			                            src="images/static/dislike.jpg">
-								        <c:if test="${comment.dislikes>0}">
-								        <sub><span class="badge"><c:out value='${comment.dislikes}'></c:out></span></sub>
-			                       		</c:if>
-			                        </a>
+							    <div id ="bloc2" class="stats" align="right">  
+								    <c:if test="${comment.user.id != sessionScope.user.id}">
+				                        <a href="likes?type=like&commentId=<c:out value='${comment.id}'></c:out>&bookId=<c:out value ='${book.id}'></c:out>">
+				                            <img alt="like" width="50 px" height="40 px" 
+									        src="images/static/like.jpg">
+									        <c:if test="${comment.likes>0}">
+									        <sub><span class="badge"><c:out value='${comment.likes}'></c:out></span></sub>
+									        </c:if>
+				                        </a>
+				                        <a href="likes?type=<c:out value='dislike'></c:out>&commentId=<c:out value='${comment.id}'></c:out>&bookId=<c:out value ='${book.id}'></c:out>">
+				                            <img alt="dislike" width="50 px" height="40 px" 
+				                            src="images/static/dislike.jpg">
+									        <c:if test="${comment.dislikes>0}">
+									        <sub><span class="badge"><c:out value='${comment.dislikes}'></c:out></span></sub>
+				                       		</c:if>
+				                        </a>
+				                    </c:if>
+				                     <c:if test="${comment.user.id == sessionScope.user.id}">
+				                            <img alt="like" width="50 px" height="40 px" 
+									        src="images/static/like.jpg">
+									        <c:if test="${comment.likes>0}">
+									        <sub><span class="badge"><c:out value='${comment.likes}'></c:out></span></sub>
+									        </c:if>
+				                        
+				                            <img alt="dislike" width="50 px" height="40 px" 
+				                            src="images/static/dislike.jpg">
+									        <c:if test="${comment.dislikes>0}">
+									        <sub><span class="badge"><c:out value='${comment.dislikes}'></c:out></span></sub>
+				                       		</c:if>
+				                    </c:if>       
 			                    </div>                    
 			                </div>
 			            </div>
@@ -160,7 +175,7 @@ function change()
 									<div class="row">
 										<div class="col-sm-1">
 											<div class="thumbnail">
-												<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+												<img class="img-responsive user-photo" src="avatar?photo=<c:out value='${reply.user.userAvatar}'></c:out>">
 											</div>
 										</div>
 									
@@ -172,21 +187,39 @@ function change()
 												</div>
 												<div class="panel-body">
 													<c:out value="${reply.content}"></c:out>
-													<div  class="stats" align="right">   		
-								                        <a href="likes?type=like&commentId=<c:out value='${reply.id}'></c:out>&book=<c:out value='${book.id}'></c:out>">							                        	
-								                            <img alt="like" width="30 px" height="20 px" 
-								                            src="images/static/like.jpg">
-								                            <c:if test="${reply.likes>0}">
-								                            <span><sub><c:out value='${reply.likes}'></c:out></sub></span>
-								                            </c:if>
-								                        </a>
-								                        <a href="likes?type=dislike&commentId=<c:out value='${reply.id}'></c:out>&book=<c:out value='${book.id}'></c:out>">
-								                            <img alt="dislike" width="30 px" height="20 px" 							                            
-								                            src="images/static/dislike.jpg">
-								                            <c:if test="${reply.dislikes>0}">
-								                            <span><sub><c:out value='${reply.dislikes}'></c:out></sub></span>
-								                            </c:if>
-								                        </a>
+													<div  class="stats" align="right"> 
+														<c:if test="${reply.user.id != sessionScope.user.id}">	
+									                        <a href="likes?type=like&commentId=<c:out value='${reply.id}'></c:out>&bookId=<c:out value='${book.id}'></c:out>">							                        	
+									                            <img alt="like" width="30 px" height="20 px" 
+									                            src="images/static/like.jpg">
+									                            <c:if test="${reply.likes>0}">
+									                            <span><sub><c:out value='${reply.likes}'></c:out></sub></span>
+									                            </c:if>
+									                        </a>
+									                        <a href="likes?type=dislike&commentId=<c:out value='${reply.id}'></c:out>&bookId=<c:out value='${book.id}'></c:out>">
+									                            <img alt="dislike" width="30 px" height="20 px" 							                            
+									                            src="images/static/dislike.jpg">
+									                            <c:if test="${reply.dislikes>0}">
+									                            <span><sub><c:out value='${reply.dislikes}'></c:out></sub></span>
+									                            </c:if>
+									                        </a>
+									                     </c:if> 
+									                     <c:if test="${reply.user.id == sessionScope.user.id}">	
+									                        							                        	
+									                            <img alt="like" width="30 px" height="20 px" 
+									                            src="images/static/like.jpg">
+									                            <c:if test="${reply.likes>0}">
+									                            <span><sub><c:out value='${reply.likes}'></c:out></sub></span>
+									                            </c:if>
+									                        
+									                       
+									                            <img alt="dislike" width="30 px" height="20 px" 							                            
+									                            src="images/static/dislike.jpg">
+									                            <c:if test="${reply.dislikes>0}">
+									                            <span><sub><c:out value='${reply.dislikes}'></c:out></sub></span>
+									                            </c:if>
+									                        
+									                     </c:if>  
 								                    </div> 												
 												</div>
 											</div>

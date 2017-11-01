@@ -10,10 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import exceptions.UnexistingException;
 import exceptions.ValidationException;
+import models.Validators;
 import models.DBmodels.CommentDAO;
-import models.DBmodels.UserDAO;
 import models.entities.User;
 import models.entities.comments.Comment;
 
@@ -28,48 +27,34 @@ public class AddCommentServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO isLogIn
-		// TODO getUser
-
-		User user = null;
-		try {
-			user = UserDAO.getInstance().getUser(1);
-		} catch (ValidationException | SQLException | UnexistingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	
+		if (!Validators.isAuthenticated(request, response)) {
+			return;
 		}
-
-		String content = request.getParameter("content");
-
-		long bookId = Long.parseLong(request.getParameter("book"));
-		java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-		Comment comment = null;
+		
 		try {
-			comment = new Comment(content, date);
-		} catch (ValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			User user = (User) request.getSession().getAttribute("user");
+			String content = request.getParameter("content");
+			long bookId = Long.parseLong(request.getParameter("book"));
+			java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+			Comment comment = new Comment(content, date);
 
-		if (request.getParameter("comment") == null) {
+			if (request.getParameter("comment") == null) {
 
-			try {
 				CommentDAO.getInstance().addComment(comment, user.getId(), bookId);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}else{
-			long commentId = Long.parseLong(request.getParameter("comment"));
-			try {
+
+			} else {
+				long commentId = Long.parseLong(request.getParameter("comment"));
+
 				CommentDAO.getInstance().addReply(comment, user.getId(), bookId, commentId);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+
+			response.sendRedirect("./BookInfo?book=" + bookId);
+
+		} catch (ValidationException | SQLException e) {
+			response.sendRedirect("./error404.html");
 		}
 
-		response.sendRedirect("./BookInfo?book=" + bookId);
 	}
 
 }

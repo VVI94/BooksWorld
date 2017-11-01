@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
+import models.Validators;
 import models.DBmodels.BookDAO;
 import models.entities.Book;
 
@@ -19,6 +20,11 @@ public class BookInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(!Validators.isAuthenticated(request, response)){
+			return;
+		}
+		
 		String id = request.getParameter("book");
 		Book book = null;
 		try {

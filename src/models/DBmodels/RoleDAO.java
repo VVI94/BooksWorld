@@ -34,7 +34,7 @@ public class RoleDAO extends DAO implements IRoleDAO {
 			PreparedStatement ps = this.getCon().prepareStatement("INSERT INTO roles(role)"
 												  + " VALUES(?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			ps.setString(1,role.getRoleName());
+			ps.setString(1,role.getRoleName().name());
 			ps.executeUpdate();
 			
 			ResultSet id = ps.getGeneratedKeys();

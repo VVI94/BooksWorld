@@ -1,5 +1,10 @@
 package models;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import exceptions.ValidationException;
 
 public class Validators {
@@ -26,6 +31,15 @@ public class Validators {
 		else{
 			throw new ValidationException("Invalid e-mail!");
 		}
+	}
+	
+	public static boolean isAuthenticated(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		if(request.getSession().getAttribute("user") == null){
+			response.sendRedirect("./login");
+			return false;
+		}
+		
+		return true;
 	}
 		
 }

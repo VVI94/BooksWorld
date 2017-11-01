@@ -39,4 +39,16 @@ public class IAdminDAO implements IUserDAO {
 		return false;
 	}
 
+	@Override
+	public User getUser(String username) throws ValidationException, SQLException, UnexistingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void editUser(long userID, User user) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

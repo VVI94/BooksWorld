@@ -18,17 +18,18 @@ import models.DBmodels.UserDAO;
 import models.entities.Order;
 import models.entities.User;
 
-/**
- * Servlet implementation class LoginServlet
- */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setAttribute("error", request.getParameter("error"));
+		request.setAttribute("view", "login.jsp");
+		request.getRequestDispatcher("base-layout.jsp").forward(request, response);
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -36,27 +37,31 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		// check if user exists in db
 		try {
-			boolean exists = UserDAO.getInstance().userExists(username, password);
-			if (exists) {
+			UserDAO.getInstance().userExists(username, password);
+			
 				// update session
 				User user = UserDAO.getInstance().getUser(username);
 				request.getSession().setAttribute("user", user);
-				ServletContext application = getServletConfig().getServletContext();
-				synchronized (application) {
-					if (application.getAttribute("orders") == null) {
-						HashSet<Order> orders = OrderDAO.getInstance().getAllOrders();
-						application.setAttribute("orders", orders);
-					}
-				}
-				request.getRequestDispatcher("index.jsp").forward(request, response);
-			} else {
-				request.setAttribute("error", "user does not exist");
-				request.getRequestDispatcher("login.jsp").forward(request, response);
-			}
-		} catch (SQLException | ValidationException | UnexistingException e) {
+//				ServletContext application = getServletConfig().getServletContext();
+//				synchronized (application) {
+//					if (application.getAttribute("orders") == null) {
+//						HashSet<Order> orders = OrderDAO.getInstance().getAllOrders();
+//						application.setAttribute("orders", orders);
+//					}
+//				}
+//				request.getRequestDispatcher("/").forward(request, response);
+			
+//				request.setAttribute("error", "user does not exist");
+//				request.getRequestDispatcher("login").forward(request, response);
+				
+				response.sendRedirect("./");
+			
+		} catch (SQLException | ValidationException e) {
 			request.setAttribute("error", "database problem : " + e.getMessage());
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 
+		} catch (UnexistingException e) {
+			response.sendRedirect("./login?error=user does not exist");
 		}
 	}
 }

@@ -49,7 +49,7 @@
 						<c:out value="${book.title}"></c:out>
 					</header>	
 					<a href ="BookInfo?book=<c:out value="${book.id}"></c:out>" >
-					<img height="250px" width="150px" src="avatar?book=<c:out value="${book.id}"></c:out>"></a>
+					<img height="250px" width="150px" src="avatar?photo=<c:out value="${book.photo}"></c:out>"></a>
 	
 				</article>
 			</div>

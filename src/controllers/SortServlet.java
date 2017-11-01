@@ -42,13 +42,19 @@ public class SortServlet extends HttpServlet {
 			}
 
 			if (books.isEmpty()) {
-				response.sendRedirect("./");
+				if (sortBy == null) {
+					response.sendRedirect("./");
+					return;
+				}
+				response.sendRedirect("./?sortBy=" + sortBy);
+				return;
+
 			} else {
 
 				if (sortBy != null) {
-					Set<Book> books1 = getSortSetBy(sortBy);
-					books1.addAll(books);
-					request.setAttribute("sortBooks", books1);
+					Set<Book> sortedBooks = getSortSetBy(sortBy);
+					sortedBooks.addAll(books);
+					request.setAttribute("sortBooks", sortedBooks);
 				} else {
 					request.setAttribute("sortBooks", books);
 				}
@@ -70,55 +76,55 @@ public class SortServlet extends HttpServlet {
 
 	}
 
-	private Set<Book> getSortSetBy(String sortBy) throws UnknownSortException{
+	public static Set<Book> getSortSetBy(String sortBy) throws UnknownSortException {
 		switch (sortBy) {
-		case "title":			
-			return new TreeSet<Book>((a,b)->{
-				if(a.getTitle().equals(b.getTitle())){
+		case "title":
+			return new TreeSet<Book>((a, b) -> {
+				if (a.getTitle().equals(b.getTitle())) {
 					return a.getAuthor().compareTo(b.getAuthor());
 				}
-				return a.getTitle().compareTo(b.getTitle());	
-			});		
-		case "price":			
-			return new TreeSet<Book>((a,b)->{
-				
-				if(a.getPrice()==b.getPrice()){
-					if(a.getTitle().equals(b.getTitle())){
-						return a.getAuthor().compareTo(b.getAuthor());
-					}
-					return a.getTitle().compareTo(b.getTitle());
-				}
-				return (int)(a.getPrice()*200-b.getPrice()*200);									
+				return a.getTitle().compareTo(b.getTitle());
 			});
-		case "year":			
-			return new TreeSet<Book>((a,b)->{ 
-				
-				if(a.getYear()== b.getYear()){
-					if(a.getTitle().equals(b.getTitle())){
+		case "price":
+			return new TreeSet<Book>((a, b) -> {
+
+				if (a.getPrice() == b.getPrice()) {
+					if (a.getTitle().equals(b.getTitle())) {
 						return a.getAuthor().compareTo(b.getAuthor());
 					}
 					return a.getTitle().compareTo(b.getTitle());
 				}
-				return  a.getYear()-b.getYear();
-			
+				return (int) (a.getPrice() * 200 - b.getPrice() * 200);
 			});
-		case "publisher":			
-			return new TreeSet<Book>((a,b)->{
-				
-				if(a.getPublisher().equals(b.getPublisher())){
-					if(a.getTitle().equals(b.getTitle())){
+		case "year":
+			return new TreeSet<Book>((a, b) -> {
+
+				if (a.getYear() == b.getYear()) {
+					if (a.getTitle().equals(b.getTitle())) {
 						return a.getAuthor().compareTo(b.getAuthor());
 					}
 					return a.getTitle().compareTo(b.getTitle());
 				}
-				
+				return a.getYear() - b.getYear();
+
+			});
+		case "publisher":
+			return new TreeSet<Book>((a, b) -> {
+
+				if (a.getPublisher().equals(b.getPublisher())) {
+					if (a.getTitle().equals(b.getTitle())) {
+						return a.getAuthor().compareTo(b.getAuthor());
+					}
+					return a.getTitle().compareTo(b.getTitle());
+				}
+
 				return a.getPublisher().compareTo(b.getPublisher());
-				
+
 			});
 		}
-		
+
 		throw new UnknownSortException("Can't sort by " + sortBy);
-	
+
 	}
-			
+
 }

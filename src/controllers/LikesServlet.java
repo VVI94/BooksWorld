@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Validators;
+import models.DBmodels.CommentDAO;
 import models.DBmodels.LikesDAO;
+import models.entities.User;
 import models.enums.LikeType;
 
 @WebServlet("/likes")
@@ -17,15 +20,25 @@ public class LikesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO userID
-		long userId = 1;
 		
+		if(!Validators.isAuthenticated(request, response)){
+			return;
+		}
+		
+		User user = (User) request.getSession().getAttribute("user");
+		long userId = user.getId();
 		long commentId =Long.parseLong(request.getParameter("commentId"));
-		long bookId = Long.parseLong(request.getParameter("book"));
+		long bookId = Long.parseLong(request.getParameter("bookId"));
 		LikeType type = this.getType(request.getParameter("type"));
-
 		
 		try {
+			long authorId = CommentDAO.getInstance().getAuthorId(commentId);
+			
+			if(authorId == userId){
+				response.sendRedirect("BookInfo?book="+bookId);
+				return;
+			}
+			
 			if(LikesDAO.getInstance().exists(commentId, type, userId)){
 				LikesDAO.getInstance().remove(commentId, type, userId);
 			}else{

@@ -142,4 +142,15 @@ public class CommentDAO extends DAO {
 
 	}
 	
+	public long getAuthorId(long commentId) throws SQLException{
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT users_user_id FROM comments"
+																	+ " WHERE comment_id =?");
+		ps.setLong(1, commentId);
+		
+		ResultSet result = ps.executeQuery();
+		result.next();
+		
+		return result.getLong("users_user_id");
+	}
+	
 }

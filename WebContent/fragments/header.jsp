@@ -43,10 +43,16 @@
                     </div>
 
                     <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">Welcome(User)</a></li>                            
-                            <li><a href="./UploadBook" class="btn">Add new book</a></li>                         
-                            <li><a href="#">Login</a></li>
+                        <ul class="nav navbar-nav navbar-right">                                                                                   
+                            <c:if test="${sessionScope.user != null}"> 
+                            <li><a href="#">Welcome ( <c:out value="${sessionScope.user.username}"></c:out> )</a></li> 
+                            <li><a href="./UploadBook" class="btn">Add new book</a></li>                    
+                            <li><a href="./logout">Logout</a></li>
+                            </c:if>  
+                            <c:if test="${sessionScope.user == null}">  
+                            <li><a href="#">Welcome(User)</a></li>                     
+                            <li><a href="./login">Login</a></li>
+                            </c:if>  
                         </ul>
                     </div>
                 </div>

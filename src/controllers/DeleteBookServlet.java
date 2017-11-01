@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Validators;
 import models.DBmodels.BookDAO;
 
 @WebServlet("/deleteBook")
@@ -16,6 +17,10 @@ public class DeleteBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(!Validators.isAuthenticated(request, response)){
+			return;
+		}
 		
 		long bookId = Long.parseLong(request.getParameter("bookId"));
 		
@@ -25,8 +30,7 @@ public class DeleteBookServlet extends HttpServlet {
 			response.sendRedirect("./");
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			response.sendRedirect("./error404.html");
 		}
 	}
 

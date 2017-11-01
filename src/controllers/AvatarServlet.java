@@ -23,15 +23,8 @@ public class AvatarServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("book");
-		Book book = null;
-		try {
-			book = BookDAO.getInstance().getBook(Long.parseLong(id));
-		} catch (NumberFormatException | SQLException | UnexistingException | ValidationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String avatar = book.getPhoto();
+
+		String avatar = request.getParameter("photo");
 
 		File myFile = new File(UploadBookServlet.BOOK_IMAGE_URL+avatar);
 		

@@ -1,6 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+   
+ <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+ 
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -9,7 +12,7 @@
 <body>
   <div class="container body-content span=8 offset=2">
 			<div class="well">
-                <form action = "UploadBook" method = "post"
+                <form action = "Register" method = "post"
          											class="form-horizontal" enctype="multipart/form-data">
                     <fieldset>
                         <legend>
@@ -36,7 +39,7 @@
                          <div class="form-group">
                             <label class="col-sm-4 control-label">Email</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" name ="email" placeholder="Email" required="required"
+                                <input type="email" class="form-control" name ="email" placeholder="Email" required="required"
                                 value="<c:if test="${user != null}"><c:out value="${user.email}"></c:out></c:if>">
                             </div>
                         </div>

@@ -7,13 +7,13 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import exceptions.AlreadyExistException;
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
 import models.DBmodels.UserDAO;
@@ -23,10 +23,11 @@ import models.entities.User;
  * Servlet implementation class UserRegisterServlet
  */
 @WebServlet("/Register")
+@MultipartConfig
 public class UserRegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public static final String USER_AVATAR_URL = "C:/Users/Vasilena/Git_IT_Talents/pictures/";
+	public static final String USER_AVATAR_URL = "E:/Final Project Workspace/BooksWorld/WebContent/images/";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

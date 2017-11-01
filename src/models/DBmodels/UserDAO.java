@@ -107,7 +107,7 @@ public class UserDAO extends DAO implements IUserDAO {
 		if(!result.next()){
 			throw new UnexistingException("User with username: " + username + " doesn't exist!");
 		}
-		long userId = UserDAO.getInstance().getUserID(username, result.getString("email"), result.getString("fisrtname"),result.getString("lastname"));
+		long userId = UserDAO.getInstance().getUserID(username, result.getString("email"), result.getString("first_name"),result.getString("last_name"));
 		//Role role = RoleDAO.getInstance().getRole(result.getLong("roles_role_id"));
 		
 		return new User(userId, result.getString("username"),result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar") );
@@ -169,7 +169,7 @@ public class UserDAO extends DAO implements IUserDAO {
 	}
 
 	@Override
-	public User getUser(Long userId) throws ValidationException, SQLException, UnexistingException {
+	public User getUser(long userId) throws ValidationException, SQLException, UnexistingException {
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT * FROM users WHERE user_id = ?");
 		ps.setLong(1, userId);
 		
