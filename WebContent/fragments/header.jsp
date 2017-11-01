@@ -17,7 +17,7 @@
 			
 			var photo = document.createElement("img");
 			photo.style = "display:inline"
-			photo.src ="http://localhost:8080/BooksWorld/avatar?book=" + book.id;
+			photo.src ="http://localhost:8080/BooksWorld/avatar?photo=" + book.photo;
 			photo.width = 100;
 			photo.height = 100;
 			$("#searchResult").append(photo);			
