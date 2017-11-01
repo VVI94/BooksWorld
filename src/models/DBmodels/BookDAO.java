@@ -283,12 +283,15 @@ public class BookDAO extends DAO implements IBookDAO {
 	public Set<Book> search(String name) throws SQLException, UnexistingException, ValidationException{
 		
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT b.book_id FROM books as b JOIN authors as a "
-				+ "ON(a.author_id = b.authors_author_id) WHERE(b.title LIKE ? OR a.first_name LIKE ? OR a.last_name LIKE ?)");
+				+ "ON(a.author_id = b.authors_author_id) "
+				+ "WHERE(b.title LIKE ? OR a.first_name LIKE ? OR a.last_name LIKE ? "
+				+ "OR (SELECT CONCAT(a.first_name,' ', a.last_name) as full_name) LIKE ?)");
 		
 			
-		ps.setString(1, name + "%");
-		ps.setString(2, name + "%");
-		ps.setString(3, name + "%");
+		ps.setString(1, "%"+ name + "%");
+		ps.setString(2, "%"+ name + "%");
+		ps.setString(3, "%"+ name + "%");
+		ps.setString(4, "%"+ name + "%");
 		
 		ResultSet result = ps.executeQuery();
 		

@@ -27,18 +27,46 @@
 	 	<div class="well">
  		<div class="row">
 
-		 		<div class="col-md-2" align="center">
-		 		<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=title">title</a>
-		 		</div> 
-		 		<div class="col-md-2" align="center">
-		 		<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=publisher">publisher</a>
-		 		</div> 
-		 		<div class="col-md-2" align="center">
-		 		<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=year">year</a>
-		 		</div> 
-		 		<div class="col-md-2" align="center">
-		 		<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=price">price</a>
-			 	</div> 	
+				<c:if test="${!requestScope.sortBy.equals('title') || requestScope.sortBy == null }">
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=title">title</a>
+			 		</div> 
+		 		</c:if>
+				<c:if test="${requestScope.sortBy.equals('title')}">
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=titleDesc">title</a>
+			 		</div> 
+		 		</c:if>	
+		 		<c:if test="${!requestScope.sortBy.equals('publisher') || requestScope.sortBy == null}">	 		
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=publisher">publisher</a>
+			 		</div> 
+		 		</c:if>	
+		 		<c:if test="${requestScope.sortBy.equals('publisher')}">	 		
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=publisherDesc">publisher</a>
+			 		</div> 
+		 		</c:if>
+		 		<c:if test="${!requestScope.sortBy.equals('year') || requestScope.sortBy == null}">			 		
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=year">year</a>
+			 		</div> 
+		 		</c:if>
+		 		<c:if test="${requestScope.sortBy.equals('year')}">			 		
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=yearDesc">year</a>
+			 		</div> 
+		 		</c:if>	
+		 		<c:if test="${!requestScope.sortBy.equals('price') || requestScope.sortBy == null}">			 		
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=price">price</a>
+				 	</div> 
+			 	</c:if>	
+		 		<c:if test="${requestScope.sortBy.equals('price')}">			 		
+			 		<div class="col-md-2" align="center">
+			 			<a href="sort?<c:out value="${requestScope.url}"></c:out>sortBy=priceDesc">price</a>
+				 	</div> 
+			 	</c:if>				 	
 		</div>
 	</div>
 	<div class="row">

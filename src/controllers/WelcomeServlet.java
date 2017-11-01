@@ -33,9 +33,7 @@ public class WelcomeServlet extends HttpServlet {
 				if (sortBy == null) {
 					request.setAttribute("books", books);
 				} else {
-					Set<Book> sortedBooks = SortServlet.getSortSetBy(sortBy);
-					sortedBooks.addAll(books);
-					request.setAttribute("books", sortedBooks);					
+					SortServlet.sortAndSet(request, sortBy, books, "books");			
 				}
 			} else {
 				request.setAttribute("books", request.getAttribute("sortBooks"));
@@ -49,7 +47,8 @@ public class WelcomeServlet extends HttpServlet {
 
 			Map<String, Long> categories = CategoryDAO.getInstance().getAllCategories();
 			request.setAttribute("categories", categories);
-
+			
+			request.setAttribute("sortBy", sortBy);
 			request.setAttribute("view", "index.jsp");
 			request.getRequestDispatcher("base-layout.jsp").forward(request, response);
 
