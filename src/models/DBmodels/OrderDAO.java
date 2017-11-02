@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
@@ -17,7 +18,7 @@ public class OrderDAO extends DAO implements IOrderDAO {
 	private OrderDAO() {
 	}
 
-	public static IOrderDAO getInstance() {
+	public static synchronized IOrderDAO getInstance() {
 		if (instance == null) {
 			instance = new OrderDAO();
 		}
@@ -61,17 +62,17 @@ public class OrderDAO extends DAO implements IOrderDAO {
 	}
 
 	@Override
-	public long getOrderId(Date date, long userId) throws SQLException, UnexistingException {
+	public long getOrderId(Date localDateTime, long userId) throws SQLException, UnexistingException {
 		PreparedStatement ps = this.getCon()
 				.prepareStatement("SELECT id FROM orders" + "	WHERE (date = ? AND users_id = ?)");
 
-		ps.setDate(1, date);
+		ps.setDate(1, localDateTime);
 		ps.setLong(2, userId);
 
 		ResultSet result = ps.executeQuery();
 
 		if (!result.next()) {
-			throw new UnexistingException("Order with date " + date + " and userId " + userId + " doesn't exists");
+			throw new UnexistingException("Order with date " + localDateTime + " and userId " + userId + " doesn't exists");
 		}
 
 		return result.getLong("id");

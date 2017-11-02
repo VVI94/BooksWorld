@@ -18,7 +18,7 @@ public class UserDAO extends DAO implements IUserDAO {
 	private UserDAO() {
 	}
 
-	public static IUserDAO getInstance() {
+	public static synchronized IUserDAO getInstance() {
 		if (instance == null) {
 			instance = new UserDAO();
 		}
@@ -158,7 +158,7 @@ public class UserDAO extends DAO implements IUserDAO {
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new SQLException("Can't edit this book", e);
+			throw new SQLException("Can't edit this user!", e);
 		} finally {
 			if (!isInTransaction) {
 				this.getCon().commit();

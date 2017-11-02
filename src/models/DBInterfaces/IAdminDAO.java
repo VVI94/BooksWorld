@@ -2,53 +2,33 @@ package models.DBInterfaces;
 
 import java.sql.SQLException;
 
+import exceptions.AlreadyExistException;
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
-import models.entities.User;
+import models.entities.Book;
+import models.entities.comments.Comment;
+import models.entities.comments.Reply;
 
-public class IAdminDAO implements IUserDAO {
+public interface IAdminDAO  {
+	
+	public void addAdmin(String username) throws SQLException, ValidationException, UnexistingException;
 
-	@Override
-	public long addUser(User user) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void removeUser(long userId) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public long getUserID(String username, String email, String fisrtname, String lastname)
-			throws ValidationException, SQLException, UnexistingException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public User getUser(long userId) throws ValidationException, SQLException, UnexistingException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean userExists(String username, String password) throws UnexistingException, SQLException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public User getUser(String username) throws ValidationException, SQLException, UnexistingException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void editUser(long userID, User user) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void removeUser(long userId) throws SQLException;
+	
+	public void addBook(Book book) throws SQLException, AlreadyExistException, ValidationException;
+	
+	public void editBook(long bookId, Book book) throws SQLException;
+	
+	public void removeBook(long bookId) throws SQLException, UnexistingException, ValidationException;
+	
+	public void addCategory(String category) throws SQLException;
+	
+	public void removeCategory(long id) throws SQLException;
+	
+	public void addComment(Comment comment, long userId, long bookId) throws SQLException;
+	
+	public void addReply(Reply comment, long userId, long bookId, long commentId) throws SQLException;
+	
+	public void deleteComment(long id) throws SQLException;
 
 }

@@ -23,7 +23,8 @@ public class Order {
 		this.id = id;
 	}
 
-	public LocalDateTime getDate() {
+	public Date getDate() {
+		Date returnDate = returnDate.parse(date);
 		return date;
 	}
 
