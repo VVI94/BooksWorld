@@ -56,7 +56,7 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 		try{
 		this.getCon().setAutoCommit(false);
 	
-		for (Long bookId : BookDAO.getInstance().getBookIDsByAuthor(authorId)) {
+		for (long bookId : BookDAO.getInstance().getBookIDsByAuthor(authorId)) {
 			BookDAO.getInstance().removeBook(bookId);
 		}
 		
