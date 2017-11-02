@@ -17,7 +17,7 @@ public class RoleDAO extends DAO implements IRoleDAO {
 	private RoleDAO() {
 	}
 
-	public static IRoleDAO getInstance() {
+	public static synchronized IRoleDAO getInstance() {
 
 		if (instance == null) {
 			instance = new RoleDAO();

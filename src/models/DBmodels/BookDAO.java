@@ -24,7 +24,7 @@ public class BookDAO extends DAO implements IBookDAO {
 	private BookDAO() {
 	}
 
-	public static BookDAO getInstance() {
+	public static synchronized BookDAO getInstance() {
 		if (instance == null) {
 			instance = new BookDAO();
 		}

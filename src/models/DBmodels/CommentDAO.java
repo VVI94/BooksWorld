@@ -21,7 +21,7 @@ public class CommentDAO extends DAO {
 	private CommentDAO() {
 	}
 
-	public static CommentDAO getInstance() {
+	public static synchronized CommentDAO getInstance() {
 		if (instance == null) {
 			instance = new CommentDAO();
 		}

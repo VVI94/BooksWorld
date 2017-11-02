@@ -15,7 +15,7 @@ public class FavouriteBooksDAO extends DAO implements IFavouriteBooksDAO {
 	private FavouriteBooksDAO() {
 	}
 
-	public static IFavouriteBooksDAO getInstance() {
+	public static synchronized IFavouriteBooksDAO getInstance() {
 		if (instance == null) {
 			instance = new FavouriteBooksDAO();
 		}

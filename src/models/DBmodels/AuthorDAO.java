@@ -16,7 +16,7 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 	private AuthorDAO() {
 	}
 
-	public static IAuthorDAO getInstance() {
+	public static synchronized IAuthorDAO getInstance() {
 		if (instance == null) {
 			instance = new AuthorDAO();
 		}
