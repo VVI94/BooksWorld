@@ -66,7 +66,7 @@ public class User {
 			this.userAvatar = "C:/Users/Vasilena/Git_IT_Talents/pictures/default_user_avatar.jpg";
 	}
 
-	private void setRoleID(Long roleid) throws ValidationException{
+	 public void setRoleID(Long roleid) throws ValidationException{
 		this.roleID = roleid;		
 	}
 

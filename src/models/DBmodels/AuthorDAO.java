@@ -16,7 +16,7 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 	private AuthorDAO() {
 	}
 
-	public static IAuthorDAO getInstance() {
+	public static synchronized IAuthorDAO getInstance() {
 		if (instance == null) {
 			instance = new AuthorDAO();
 		}
@@ -56,7 +56,7 @@ public class AuthorDAO extends DAO implements IAuthorDAO {
 		try{
 		this.getCon().setAutoCommit(false);
 	
-		for (Long bookId : BookDAO.getInstance().getBookIDsByAuthor(authorId)) {
+		for (long bookId : BookDAO.getInstance().getBookIDsByAuthor(authorId)) {
 			BookDAO.getInstance().removeBook(bookId);
 		}
 		

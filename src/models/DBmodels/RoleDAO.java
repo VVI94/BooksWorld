@@ -5,8 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import exceptions.UnexistingException;
+import exceptions.ValidationException;
 import models.DBInterfaces.IRoleDAO;
 import models.entities.Role;
+import models.enums.UserRole;
 
 public class RoleDAO extends DAO implements IRoleDAO {
 
@@ -15,7 +17,7 @@ public class RoleDAO extends DAO implements IRoleDAO {
 	private RoleDAO() {
 	}
 
-	public static IRoleDAO getInstance() {
+	public static synchronized IRoleDAO getInstance() {
 
 		if (instance == null) {
 			instance = new RoleDAO();
@@ -44,10 +46,10 @@ public class RoleDAO extends DAO implements IRoleDAO {
 //	}
 
 	@Override
-	public long getRoleId(String roleName) throws SQLException {
+	public long getRoleId(UserRole roleName) throws SQLException {
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT id FROM roles " + "WHERE role = ?");
 
-		ps.setString(1, roleName);
+		ps.setString(1, roleName.name());
 
 		ResultSet result = ps.executeQuery();
 
@@ -57,7 +59,7 @@ public class RoleDAO extends DAO implements IRoleDAO {
 	}
 
 	@Override
-	public Role getRole(long id) throws SQLException, UnexistingException {
+	public Role getRole(long id) throws SQLException, UnexistingException, ValidationException {
 		PreparedStatement ps = this.getCon().prepareStatement("SELECT role FROM roles " + "WHERE role_id = ?");
 
 		ps.setLong(1, id);
@@ -66,7 +68,7 @@ public class RoleDAO extends DAO implements IRoleDAO {
 			throw new UnexistingException("Role with id: " + id + " doesn't exist!");
 		}
 
-		return new Role(id, result.getString(1));
+		return new Role(id, result.getString(1)); 
 	}
 
 	@Override

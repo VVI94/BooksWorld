@@ -17,7 +17,7 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 	private CategoryDAO() {
 	}
 
-	public static ICategoryDAO getInstance() {
+	public static synchronized ICategoryDAO getInstance() {
 
 		if (instance == null) {
 			instance = new CategoryDAO();

@@ -21,8 +21,8 @@ public class DBManager {
 		final String DB_IP = "localhost";
 		final String DB_PORT = "3306";
 		final String  DB_NAME = "book_world";
-		final String DB_USER = "Redmort";
-		final String DB_PASSWORD = "Plamen11*";
+		final String DB_USER = "VVI";
+		final String DB_PASSWORD = "VVI*";
 		
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://" + DB_IP +":"+ DB_PORT + "/" + DB_NAME

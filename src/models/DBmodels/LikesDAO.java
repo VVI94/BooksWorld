@@ -13,7 +13,7 @@ public class LikesDAO extends DAO {
 	private LikesDAO() {
 	}
 
-	public static LikesDAO getInstance() {
+	public static synchronized LikesDAO getInstance() {
 		if (instance == null) {
 			instance = new LikesDAO();
 		}
