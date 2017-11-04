@@ -14,12 +14,17 @@
 			<div class="well">
                 <form action = "Register" method = "post"
          											class="form-horizontal" enctype="multipart/form-data">
+						
                     <fieldset>
                         <legend>
                         <c:if test="${user == null}">New User</c:if>
                          <c:if test="${user != null}">Edit User</c:if>
+                         <c:if test="${requestScope.error != null}">
+                       		  <h2 align="center" style="color: red"><c:out value="${requestScope.error}"></c:out></h2>
+                         </c:if>
                         </legend>
-
+                        
+						
                         <div class="form-group">
                             <label class="col-sm-4 control-label">Username</label>
                             <div class="col-sm-4 ">
@@ -71,7 +76,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">Telephone</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" name ="telephone" placeholder="Telephone" required="required"
+                                <input type="tel" class="form-control" name ="telephone" placeholder="Telephone" required="required"
                                 value="<c:if test="${user != null}"><c:out value="${user.telephone}"></c:out></c:if>">
                             </div>
                         </div>
@@ -106,9 +111,7 @@
                         </div>
                                           
                     </fieldset>
-               </form>
-            
-                
+               </form>              
         </div>
 	</div>
 </body>

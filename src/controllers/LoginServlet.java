@@ -2,9 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,9 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
-import models.DBmodels.OrderDAO;
 import models.DBmodels.UserDAO;
-import models.entities.Order;
 import models.entities.User;
 
 @WebServlet("/login")

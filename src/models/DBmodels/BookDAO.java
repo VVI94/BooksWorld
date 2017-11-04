@@ -69,7 +69,7 @@ public class BookDAO extends DAO implements IBookDAO {
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
-
+			this.getCon().rollback();
 			throw new SQLException("Can't add this book", e);
 		} finally {
 			if (!isInTransaction) {
@@ -269,6 +269,7 @@ public class BookDAO extends DAO implements IBookDAO {
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
+			this.getCon().rollback();
 			throw new SQLException("Can't edit this book", e);
 		} finally {
 			if (!isInTransaction) {
@@ -298,17 +299,67 @@ public class BookDAO extends DAO implements IBookDAO {
 		return this.getBooksFromResult(result);
 	}
 	
-	public Set<Book> getAllBooksByCategoryId(long id) throws SQLException{
-		Set<Book> books = new HashSet<>();
-		for (Long bookId : this.getBookIDsByCategory(id)) {
-			try {
-				books.add(this.getBook(bookId));
-			} catch (UnexistingException | ValidationException e) {
-				System.out.println(e.getMessage());
-			}
+	public Set<Book> getAllBooksByCategoryId(long id, String author, int minYear,
+		int maxYear, int minPrice, int maxPrice) throws SQLException, UnexistingException, ValidationException{
+		
+		StringBuilder sb =new StringBuilder();
+		
+		sb.append("SELECT b.book_id FROM books as b JOIN authors as a ON(a.author_id = b.authors_author_id) "
+				+ "WHERE ");
+		
+		if(id != 0){
+			sb.append("categories_category_id = ? AND ");
 		}
+		
+		sb.append("price BETWEEN ? AND ? AND year BETWEEN ? AND ?");
+		
+		if(author!=null && !author.equals("")){
+			sb.append(" AND(a.first_name LIKE ? OR a.last_name LIKE ? OR (SELECT CONCAT(a.first_name,' ',a.last_name) LIKE ?))");
+		}
+				
+		PreparedStatement ps = this.getCon().prepareStatement(sb.toString());
+		
+		int num = 1;
+		if(id != 0){
+			ps.setLong(num++, id);
+		}
+		ps.setInt(num++, Math.min(minPrice, maxPrice));
+		ps.setInt(num++, Math.max(minPrice, maxPrice));
+		ps.setInt(num++, Math.min(minYear, maxYear));
+		ps.setInt(num++, Math.max(minYear, maxYear));
+		
+		if(author!=null && !author.equals("")){
+			ps.setString(num++, "%"+ author + "%");
+			ps.setString(num++, "%"+ author + "%");
+			ps.setString(num++, "%"+ author + "%");
+		}
+		
+		ResultSet result = ps.executeQuery();
+				
+		Set<Book> books = new HashSet<>();
+		
+		while (result.next()) {
+			books.add(this.getBook(result.getLong("book_id")));			
+		}
+//		for (Long bookId : this.getBookIDsByCategory(id)) {
+//			try {
+//				books.add(this.getBook(bookId));
+//			} catch (UnexistingException | ValidationException e) {
+//				System.out.println(e.getMessage());
+//			}
+//		}
 		
 		return books;
 	}
 
+	public long getBookIdByCommentId(long CommentId) throws SQLException{
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT books_book_id FROM comments WHERE comment_id = ?");
+		
+		ps.setLong(1, CommentId);
+		ResultSet result = ps.executeQuery();
+		result.next();
+		
+		return result.getLong(1);
+				
+	}
 }

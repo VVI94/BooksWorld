@@ -4,6 +4,6 @@
 
     <div class="container modal-footer">
     
-        <img src ="images/static/logo-black.jpeg" width="200" height="70">
+        <img src ="images/static/logo-black.jpeg" width="200" height="100%">
         
     </div>

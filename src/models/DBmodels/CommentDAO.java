@@ -85,8 +85,9 @@ public class CommentDAO extends DAO {
 		return new Comment(id, content, date, user, replies, likes, dislikes);
 	}
 
-	private List<Reply> getAllReplies(long commentId) throws SQLException, ValidationException, UnexistingException {
+	public List<Reply> getAllReplies(long commentId) throws SQLException, ValidationException, UnexistingException {
 		List<Reply> replies = new LinkedList<>();
+		
 		PreparedStatement ps = this.getCon()
 				.prepareStatement("SELECT * FROM comments " + "WHERE comments_comment_id = ? ORDER BY date");
 		ps.setLong(1, commentId);
@@ -153,4 +154,15 @@ public class CommentDAO extends DAO {
 		return result.getLong("users_user_id");
 	}
 	
+	public int getLikes(long commentId, String type) throws SQLException{
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT COUNT(*) as count FROM likes "
+				+ "WHERE comments_comment_id = ? AND type = ?");
+		
+		ps.setLong(1, commentId);
+		ps.setString(2, type.toUpperCase());
+		
+		ResultSet result = ps.executeQuery();
+		result.next();
+		return result.getInt("count");
+	}
 }

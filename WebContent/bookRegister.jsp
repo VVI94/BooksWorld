@@ -33,7 +33,7 @@
                          <div class="form-group">
                             <label class="col-sm-4 control-label">Year</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" name ="year" placeholder="Year" required="required"
+                                <input type="number" class="form-control" name ="year" placeholder="Year" required="required"
                                 value="<c:if test="${book != null}"><c:out value="${book.year}"></c:out></c:if>">
                             </div>
                         </div>
@@ -49,15 +49,20 @@
                          <div class="form-group">
                             <label class="col-sm-4 control-label">Category</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" name ="category" placeholder="Category" required="required"
+                                <input type="text" class="form-control" list="categories" name ="category" placeholder="Category" required="required"
                                 value="<c:if test="${book != null}"><c:out value="${book.category}"></c:out></c:if>">
+                                	<datalist id="categories">
+										<c:forEach items="${categories.keySet()}" var="category">
+  											<option><c:out value="${category}"></c:out></option>
+										</c:forEach>
+									</datalist>
                             </div>
                         </div>
                         
                          <div class="form-group">
                             <label class="col-sm-4 control-label">Price</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" name ="price" placeholder="Price" required="required"
+                                <input type="number" step="0.01" class="form-control" name ="price" placeholder="Price" required="required"
                                 value="<c:if test="${book != null}"><c:out value="${book.price}"></c:out></c:if>">
                             </div>
                         </div>
@@ -98,7 +103,7 @@
 
                             </div>
                         </div>
-                                          
+                                                                  
                     </fieldset>
                </form>
             

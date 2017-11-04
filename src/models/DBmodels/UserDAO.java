@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
 import models.DBInterfaces.IUserDAO;
-import models.entities.Book;
-import models.entities.Role;
 import models.entities.User;
 
 public class UserDAO extends DAO implements IUserDAO {

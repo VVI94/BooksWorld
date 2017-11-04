@@ -134,8 +134,7 @@ public class Book {
 	}
 
 	private void setPrice(double price) throws ValidationException {
-
-		if (this.price < 0) {
+		if (price < 0) {
 			throw new ValidationException("Invalid price!");
 		}
 

@@ -19,9 +19,6 @@ import exceptions.ValidationException;
 import models.DBmodels.UserDAO;
 import models.entities.User;
 
-/**
- * Servlet implementation class UserRegisterServlet
- */
 @WebServlet("/Register")
 @MultipartConfig
 public class UserRegisterServlet extends HttpServlet {
@@ -33,7 +30,7 @@ public class UserRegisterServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		User user = null;
-		
+
 		if (request.getParameter("userID") != null) {
 			try {
 				user = UserDAO.getInstance().getUser(Long.parseLong(request.getParameter("userID")));
@@ -42,6 +39,7 @@ public class UserRegisterServlet extends HttpServlet {
 			}
 		}
 
+		request.setAttribute("error", request.getParameter("error"));
 		request.setAttribute("user", user);
 		request.setAttribute("view", "userRegister.jsp");
 		request.getRequestDispatcher("base-layout.jsp").forward(request, response);
@@ -60,37 +58,42 @@ public class UserRegisterServlet extends HttpServlet {
 		Part picture = request.getPart("picture");
 
 		String userAvatar = username + "_" + firstname + "_" + lastname + ".jpg";
-		File userFile = new File(USER_AVATAR_URL + userAvatar);
-
-		if (picture.getSize() > 0) {
-			try (InputStream input = picture.getInputStream()) {
-				File prevPicture = new File(USER_AVATAR_URL + request.getParameter("picture"));
-				if (prevPicture.exists()) {
-					prevPicture.delete();
-				}
-				Files.copy(input, userFile.toPath());
-			}
-		} else {
-			File prevPhoto = new File(USER_AVATAR_URL + request.getParameter("picture"));
-			prevPhoto.renameTo(userFile);
-		}
 
 		try {
 			User user = new User(username, password, email, firstname, lastname, address, telephone, userAvatar);
+			File userFile = new File(USER_AVATAR_URL + userAvatar);
+
+			if (picture.getSize() > 0) {
+				try (InputStream input = picture.getInputStream()) {
+					File prevPicture = new File(USER_AVATAR_URL + request.getParameter("picture"));
+					if (prevPicture.exists()) {
+						prevPicture.delete();
+					}
+					Files.copy(input, userFile.toPath());
+				}
+			} else {
+				File prevPhoto = new File(USER_AVATAR_URL + request.getParameter("picture"));
+				prevPhoto.renameTo(userFile);
+			}
+
 			if (request.getParameter("userID") != null) {
 
 				long userID = Long.parseLong(request.getParameter("userID"));
 				UserDAO.getInstance().editUser(userID, user);
+				request.getSession().removeAttribute("user");
+				request.getSession().setAttribute("user", user);
 
 			} else {
 				UserDAO.getInstance().addUser(user);
+				user = UserDAO.getInstance().getUser(username);
+				request.getSession().setAttribute("user", user);
 			}
 
 			response.sendRedirect("./");
 
-		} catch (ValidationException | SQLException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+		} catch (ValidationException | SQLException | UnexistingException e) {
+			
+			response.sendRedirect("./Register?error=" + e.getMessage());
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -19,6 +20,7 @@ import exceptions.UnexistingException;
 import exceptions.ValidationException;
 import models.Validators;
 import models.DBmodels.BookDAO;
+import models.DBmodels.CategoryDAO;
 import models.entities.Author;
 import models.entities.Book;
 
@@ -31,8 +33,8 @@ public class UploadBookServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		if(!Validators.isAuthenticated(request, response)){
+
+		if (!Validators.isAuthenticated(request, response)) {
 			return;
 		}
 
@@ -49,24 +51,24 @@ public class UploadBookServlet extends HttpServlet {
 		String image = title + "_" + firstName + "_" + lastName + ".jpg";
 		File myFile = new File(BOOK_IMAGE_URL + image);
 
-		if (photo.getSize() > 0) {
-			try (InputStream input = photo.getInputStream()) {
-				File prevPhoto = new File(BOOK_IMAGE_URL + request.getParameter("bookPhoto"));
-				if (prevPhoto.exists()) {
-					prevPhoto.delete();
-				}
-				Files.copy(input, myFile.toPath());
-			}
-		} else {
-			File prevPhoto = new File(BOOK_IMAGE_URL + request.getParameter("bookPhoto"));
-			prevPhoto.renameTo(myFile);
-		}
-
 		try {
 
 			Author author = new Author(firstName, lastName);
 
 			Book book = new Book(title, description, year, publisher, price, category, author, image);
+
+			if (photo.getSize() > 0) {
+				try (InputStream input = photo.getInputStream()) {
+					File prevPhoto = new File(BOOK_IMAGE_URL + request.getParameter("bookPhoto"));
+					if (prevPhoto.exists()) {
+						prevPhoto.delete();
+					}
+					Files.copy(input, myFile.toPath());
+				}
+			} else {
+				File prevPhoto = new File(BOOK_IMAGE_URL + request.getParameter("bookPhoto"));
+				prevPhoto.renameTo(myFile);
+			}
 
 			if (request.getParameter("bookId") != null) {
 
@@ -81,6 +83,9 @@ public class UploadBookServlet extends HttpServlet {
 			response.sendRedirect("./");
 
 		} catch (ValidationException | SQLException | AlreadyExistException e1) {
+			if (myFile.exists()) {
+				myFile.delete();
+			}
 			e1.printStackTrace();
 			System.out.println(e1.getMessage());
 		}
@@ -89,23 +94,34 @@ public class UploadBookServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		if(!Validators.isAuthenticated(request, response)){
+
+		if (!Validators.isAuthenticated(request, response)) {
 			return;
 		}
-		
+
 		Book book = null;
 		if (request.getParameter("bookId") != null) {
 			try {
 				book = BookDAO.getInstance().getBook(Long.parseLong(request.getParameter("bookId")));
 			} catch (NumberFormatException | SQLException | UnexistingException | ValidationException e) {
-				response.sendRedirect("./error404.html");
+				
 			}
 		}
+		
+		try {
+			Map<String, Long> categories = CategoryDAO.getInstance().getAllCategories();
+			
+			
+			request.setAttribute("categories", categories);
+			request.setAttribute("book", book);
+			request.setAttribute("view", "bookRegister.jsp");
+			request.getRequestDispatcher("base-layout.jsp").forward(request, response);
+						
+		} catch (SQLException e) {
+			response.sendRedirect("./error404.html");
+		}
 
-		request.setAttribute("book", book);
-		request.setAttribute("view", "bookRegister.jsp");
-		request.getRequestDispatcher("base-layout.jsp").forward(request, response);
+
 	}
 
 }
