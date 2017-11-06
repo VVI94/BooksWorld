@@ -24,7 +24,7 @@ import models.entities.User;
 public class UserRegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public static final String USER_AVATAR_URL = "C:/Users/Vasilena/Git_IT_Talents/pictures/";
+	public static final String USER_AVATAR_URL = "E:/Final Project Workspace/BooksWorld/WebContent/images/";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

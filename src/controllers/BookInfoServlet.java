@@ -35,6 +35,7 @@ public class BookInfoServlet extends HttpServlet {
 			request.getRequestDispatcher("base-layout.jsp").forward(request, response);
 			
 		} catch (NumberFormatException | SQLException | UnexistingException | ValidationException e1) {
+			e1.printStackTrace();
 			response.sendRedirect("./error404.html");
 		}
 

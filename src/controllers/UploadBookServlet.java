@@ -29,7 +29,7 @@ import models.entities.Book;
 public class UploadBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public static final String BOOK_IMAGE_URL = "C:/Users/Vasilena/Git_IT_Talents/pictures/";
+	public static final String BOOK_IMAGE_URL = "E:/Final Project Workspace/BooksWorld/WebContent/images/";
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

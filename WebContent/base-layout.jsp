@@ -10,8 +10,18 @@
         <link type="text/css" rel="stylesheet" href= "css/style.css"/> 
         <link type="text/css" rel="stylesheet" href= "css/search.css"/>       
         <script src="scripts/jquery-3.2.1.min.js"></script>
-  		<script src="scripts/bootstrap.js"></script>
- 
+		<script src="scripts/bootstrap.js"></script>
+
+
+<style type="text/css">
+
+body {
+	background: none;
+}
+</style>
+
+
+
 </head>
 
 <body>

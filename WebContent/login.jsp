@@ -38,7 +38,8 @@
 			<div class="form-group" align="right">
 				<label class="col-sm-4 control-label"></label>
 				<div class="col-sm-4">
-				Don`t have an account yet? Please register <a href="./Register">here</a>.
+				Don`t have an account yet?
+				Please register <a href="./Register">here</a>.
 				<br>
 				<input type="submit" value="Login"><br>
 				

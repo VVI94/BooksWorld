@@ -18,4 +18,6 @@ public interface ICategoryDAO {
 	boolean exist(String category) throws SQLException;
 	
 	Map<String, Long> getAllCategories() throws SQLException;
+	
+	public Map<String, Long> getAllFavourites(long userId) throws SQLException;
 }

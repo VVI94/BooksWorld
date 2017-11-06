@@ -362,4 +362,16 @@ public class BookDAO extends DAO implements IBookDAO {
 		return result.getLong(1);
 				
 	}
+	
+	public Set<Book> getAllFavourite(long userId) throws SQLException, UnexistingException, ValidationException{
+		
+		Set<Book> favourites = new HashSet<>();
+		
+		for (Long bookId : FavouriteDAO.getInstance().getAll(userId)){
+			favourites.add(this.getBook(bookId));
+		};
+		
+		return favourites;
+		
+	}
 }

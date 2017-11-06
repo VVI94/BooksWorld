@@ -3,7 +3,6 @@ package models.DBmodels;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -133,5 +132,29 @@ public class CategoryDAO extends DAO implements ICategoryDAO {
 		
 		return categories;
 	}
+	
+	public Map<String, Long> getAllFavourites(long userId) throws SQLException{
+		
+		PreparedStatement ps = this.getCon().prepareStatement("SELECT * FROM categories as c JOIN books as b "
+				+ "ON (c.category_id = b.categories_category_id) JOIN favourite_books as f "
+				+ "ON (b.book_id = f.books_book_id) WHERE f.users_user_id =?");
+		
+		ps.setLong(1, userId);
+		
+		ResultSet result = ps.executeQuery();
+		
+		Map<String, Long> categories = new TreeMap<>();
+		while (result.next()) {
+			long id = result.getLong("category_id");
+			String name = result.getString("category_name");
+			
+			categories.put(name, id);
+			
+		}
+		
+		return categories;
+	}
+	
+	
 
 }

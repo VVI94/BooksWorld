@@ -10,7 +10,10 @@ $(function() {
 			
 			for (var index = 0; index < data.length; index++) {
 				var book = data[index];
-				result += "<option>" + book.title + " (Author: " + book.author.firstName + " "+ book.author.lastName+")" + "</option>";
+			//	result += "<option>" + book.title + " (Author: " + book.author.firstName + " "+ book.author.lastName+")" + "</option>";
+				var a = book.title + "(Author: " + book.author.firstName + " "+ book.author.lastName+")";
+				console.log(a);
+				result += "<option id=\""+book.id+ "\" value=\""+a+"\"></option>";
 				
 				image += "<img src =\"avatar?photo=" +book.photo + "\" height=\"80px\" width=\"60\" />";
 				

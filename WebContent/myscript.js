@@ -43,7 +43,7 @@ $(function() {
 									result += "</div>"		
 									result += "<div class=\"pull-left meta\">"
 										result += "<div class=\"title h5\">"
-											result += "<a href=\"#\"><b>"+comment.user.username+"</b></a>made a post."
+											result += "<a href=\"#\"><b>"+comment.user.username+"</b></a> &nbsp; made a post."
 										result += "</div>"	
 										result += "<h6 class=\"text-muted time\">"+comment.date+"</h6>"																				
 									result += "</div>"									
@@ -197,31 +197,31 @@ $(function() {
 			
 			$('button').on('click', function() {
 				
-				var id = $(this).attr('value');
-				console.log(id)
 				
+				var id = $(this).attr('value');
+							
 				var name = "name" + id;
 				
 				var name1 = "name1" + id;
-				console.log(name);
+				
 				var data  = {
 					name: $("#"+name).val(),
 					name1:$("#"+name1).val(),
 					commentId: id
 				}; 
 				
-				console.log($(this).attr('id'));
-				
 				var url = 'getReplies';
 				if($(this).attr('id')=== 'addNewComment'){
 					url = 'getComments'
 				}
 				
-				
-				$.post(url, {data: JSON.stringify(data)}).then(function() {
-					loadReplies(id);
-					loadComments(bookId);
-				});
+				if($(this).attr('id') !== "buyButton"){
+					
+					$.post(url, {data: JSON.stringify(data)}).then(function() {
+						loadReplies(id);
+						loadComments(bookId);
+					});
+				}
 			});
 			
 		});
@@ -291,7 +291,7 @@ $(function() {
 								result += "<div class=\"panel panel-default\" id=\"replyBack\">"
 									result += "<div class=\"panel-heading\">"
 										result += "<strong>"+reply.user.username+"</strong>"
-										result += "<span class=\"text-muted\">commented on "+reply.date+"</span>"
+										result += "<span class=\"text-muted\"> &nbsp; commented on "+reply.date+"</span>"
 									result += "</div>"
 									
 									result += "<div class=\"panel-body\">"
@@ -359,3 +359,4 @@ function change()
     if (elem.value=="Hide comments") elem.value = "Show comments";
     else elem.value = "Hide comments";
 }
+
