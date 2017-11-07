@@ -300,12 +300,24 @@ public class BookDAO extends DAO implements IBookDAO {
 	}
 	
 	public Set<Book> getAllBooksByCategoryId(long id, String author, int minYear,
-		int maxYear, int minPrice, int maxPrice) throws SQLException, UnexistingException, ValidationException{
+		int maxYear, int minPrice, int maxPrice, boolean isInFavourite, long userId) throws SQLException, UnexistingException, ValidationException{
 		
 		StringBuilder sb =new StringBuilder();
 		
-		sb.append("SELECT b.book_id FROM books as b JOIN authors as a ON(a.author_id = b.authors_author_id) "
-				+ "WHERE ");
+		sb.append("SELECT b.book_id FROM books as b JOIN authors as a ON(a.author_id = b.authors_author_id) ");
+		
+		if(isInFavourite){
+			sb.append("JOIN favourite_books as f ON(b.book_id = f.books_book_id)");
+		}
+
+		
+		sb.append("WHERE ");
+		
+		
+		if(isInFavourite){
+			sb.append("users_user_id = ? AND ");
+		}
+		
 		
 		if(id != 0){
 			sb.append("categories_category_id = ? AND ");
@@ -320,6 +332,11 @@ public class BookDAO extends DAO implements IBookDAO {
 		PreparedStatement ps = this.getCon().prepareStatement(sb.toString());
 		
 		int num = 1;
+		
+		if(isInFavourite){
+			ps.setLong(num++, userId);;
+		}
+		
 		if(id != 0){
 			ps.setLong(num++, id);
 		}
@@ -374,4 +391,68 @@ public class BookDAO extends DAO implements IBookDAO {
 		return favourites;
 		
 	}
+	
+//	public Set<Book> getAllBooksByCategoryName(String name, String author, int minYear,
+//			int maxYear, int minPrice, int maxPrice, boolean isInFavourite) throws SQLException, UnexistingException, ValidationException{
+//			
+//			StringBuilder sb =new StringBuilder();
+//			
+//			sb.append("SELECT b.book_id FROM books as b JOIN authors as a ON(a.author_id = b.authors_author_id) ");
+//			
+//			
+//			if(isInFavourite){
+//				sb.append("JOIN favourite_books as f ON(b.book_id = f.books_book_id)");
+//			}
+//
+//			
+//			sb.append("WHERE ");
+//			
+//			
+//			if(isInFavourite){
+//				sb.append("users_user_id = ? AND ");
+//			}
+//			
+//			if(name != ""){
+//				sb.append("categories_category_name = ? AND ");
+//			}
+//			
+//			sb.append("price BETWEEN ? AND ? AND year BETWEEN ? AND ?");
+//			
+//			if(author!=null && !author.equals("")){
+//				sb.append(" AND(a.first_name LIKE ? OR a.last_name LIKE ? OR (SELECT CONCAT(a.first_name,' ',a.last_name) LIKE ?))");
+//			}
+//					
+//			PreparedStatement ps = this.getCon().prepareStatement(sb.toString());
+//			
+//			int num = 1;
+//			
+//			if(isInFavourite){
+//				ps.setString(num++, userId);;
+//			}
+//			
+//			if(name != ""){
+//				ps.setString(num++, name);
+//			}
+//			ps.setInt(num++, Math.min(minPrice, maxPrice));
+//			ps.setInt(num++, Math.max(minPrice, maxPrice));
+//			ps.setInt(num++, Math.min(minYear, maxYear));
+//			ps.setInt(num++, Math.max(minYear, maxYear));
+//			
+//			if(author!=null && !author.equals("")){
+//				ps.setString(num++, "%"+ author + "%");
+//				ps.setString(num++, "%"+ author + "%");
+//				ps.setString(num++, "%"+ author + "%");
+//			}
+//			
+//			ResultSet result = ps.executeQuery();
+//					
+//			Set<Book> books = new HashSet<>();
+//			
+//			while (result.next()) {
+//				books.add(this.getBook(result.getLong("book_id")));			
+//			}
+//
+//			
+//			return books;
+//		}
 }

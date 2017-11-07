@@ -73,9 +73,11 @@ $(document).ready(function() {
 							  </ul>
                                                       
                             </li>                                              
-                            <li><a href="#" >
+                            <li><a href="./cart" >
  								<i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
- 								<sub><span id="cartBadge" class="badge">3</span></sub></a> </li> 
+ 							<!--	<sub><span id="cartBadge" class="badge">3</span></sub></a> -->
+ 								<sub><span id="cartBadge1"></span></sub></a>
+ 								</li> 
  								                             
                             </c:if>  
                             <c:if test="${sessionScope.user == null}">  
@@ -107,5 +109,6 @@ $(document).ready(function() {
         <div class="row" id ="searchResult">
 </div> 
  
- 	<script src='myscript1.js'></script>       
+ 	<script src='myscript1.js'></script>
+ 	<script src='addToCart.js'></script>       
        

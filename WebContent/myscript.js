@@ -51,7 +51,7 @@ $(function() {
 								
 								result += "<div class=\"post-description\" id=\"commentDescr\">"	
 									result += "<p>" +comment.content+ "</p>"
-									console.log("predi length" + comment.id);
+									
 									if(comment.replyComments.length > 0){
 										result += "<div id =\"bloc1\" class=\"btn btn-primary btn-xs\" data-toggle=\"collapse\" data-target=\"#a"+comment.id+"\">" +
 												"Show replies " +
@@ -177,11 +177,11 @@ $(function() {
 			$('#comments1').html(result);
 			
 			$('.like').on('click', function() {
-				console.log('vlizam li v clicka')
+				
 				var input = $(this).attr('id');
 				var commentId = input.split("Count")[1];
 				var type = input.split("Count")[0];
-				console.log("kakvo predi post" + input)
+				
 				
 				var data ={
 					input:input
@@ -259,7 +259,7 @@ $(function() {
 			}else{
 			 id = 'DISLIKESCount' + commentId;
 			}
-			console.log("kakvo id izprashtam"+id);
+			
 			$("#"+id).html(result);
 			
 		});
@@ -270,7 +270,7 @@ $(function() {
 	
 	
 	function loadReplies(commentId){
-		console.log(commentId)
+		
 		$.get('getReplies?commentId=' + commentId).then( function(data) {
 			
 			var reply = '';
@@ -323,12 +323,12 @@ $(function() {
 			
 			
 			$('.likeReply').off().on('click', function() {
-				console.log('vlizam li v clicka2')
+				
 				
 				var input = $(this).attr('id');
 				var commentId = input.split("Count")[1];
 				var type = input.split("Count")[0];
-				console.log("kakvo predi post" + input)
+				
 				
 				
 				

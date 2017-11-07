@@ -28,11 +28,14 @@ public class GetCommentService extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		if(!Validators.isAuthenticated(request, response)){
+			return;
+		}
+		
 		response.setContentType("text.json");
 		response.setCharacterEncoding("UTF-8");
 
 		String bookId = request.getParameter("bookId");
-		System.out.println(bookId);
 		try {
 
 			response.getWriter()
@@ -60,7 +63,6 @@ public class GetCommentService extends HttpServlet {
 
 			Gson gson = new GsonBuilder().create();
 			JsonObject jobj = gson.fromJson(data, JsonObject.class);
-			System.out.println(jobj.toString());
 			String bookId =jobj.get("commentId").getAsString();
 			
 	//		String content1 = jobj.get("name").getAsString();

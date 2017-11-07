@@ -26,9 +26,7 @@ input[type=number] {
 	width: 60px;
 }
 
-#try {
-	background-image: url('./images/static/books.jpg');
-}
+
 </style>
 
  

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,11 +13,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
 import models.DBmodels.UserDAO;
+import models.entities.Book;
 import models.entities.User;
 
 @WebServlet("/Register")
@@ -80,8 +83,14 @@ public class UserRegisterServlet extends HttpServlet {
 
 				long userID = Long.parseLong(request.getParameter("userID"));
 				UserDAO.getInstance().editUser(userID, user);
-				request.getSession().removeAttribute("user");
-				request.getSession().setAttribute("user", user);
+				request.getSession().invalidate();
+				
+				HttpSession session = request.getSession();
+				
+				
+					session.setAttribute("shopCart", new HashMap<Book, Double>());
+					session.setAttribute("user", user);
+				
 
 			} else {
 				UserDAO.getInstance().addUser(user);
