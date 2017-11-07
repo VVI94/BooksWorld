@@ -179,6 +179,16 @@ public class UserDAO extends DAO implements IUserDAO {
 		
 		return new User(userId, result.getString("username"),result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar") );
 	}
+
+	public static int incrementVerificationAttempts(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static void updateEmailVerificationHash(String userId, String hashpw) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

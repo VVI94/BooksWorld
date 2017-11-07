@@ -3,6 +3,7 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.sql.SQLException;
 
@@ -14,9 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.tomcat.dbcp.dbcp2.Utils;
+
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
+import models.StatusPojo;
 import models.DBmodels.UserDAO;
+import models.entities.SendRegistrationEmail;
 import models.entities.User;
 
 @WebServlet("/Register")
@@ -59,8 +64,9 @@ public class UserRegisterServlet extends HttpServlet {
 
 		String userAvatar = username + "_" + firstname + "_" + lastname + ".jpg";
 
+		User user;
 		try {
-			User user = new User(username, password, email, firstname, lastname, address, telephone, userAvatar);
+			user = new User(username, password, email, firstname, lastname, address, telephone, userAvatar);
 			File userFile = new File(USER_AVATAR_URL + userAvatar);
 
 			if (picture.getSize() > 0) {
@@ -92,9 +98,27 @@ public class UserRegisterServlet extends HttpServlet {
 			response.sendRedirect("./");
 
 		} catch (ValidationException | SQLException | UnexistingException e) {
-			
+
 			response.sendRedirect("./Register?error=" + e.getMessage());
 		}
+
+		String hash = Utils.prepareRandomString(30);
+
+		// generate hash for password
+		user.setEmailVerificationHash((BCrypt.hashpw(hash, GlobalConstants.SALT));
+		StatusPojo sp = new StatusPojo();
+		String output = "";
+
+		SendRegistrationEmail.generateAndSendEmail(id, email, hash);
+		sp.setCode(0);
+		sp.setMessage("Registation Link Was Sent To Your Mail Successfully. Please Verify Your Email");
+		output = Utils.toJson(sp);
+
+		// send output to user
+		PrintWriter pw = response.getWriter();
+		pw.write(output);
+		pw.flush();
+		pw.close();
 	}
 
 }

@@ -27,6 +27,13 @@ public class User {
 	private String userAvatar;
 	private Set<Order> orders;
 	
+	private String emailVerificationHash;
+	private int emailVerificationAttmps;
+	private String status;
+	private String createdTime;
+	
+		
+	
 	
 	
 	public User(String username, String password, String email, String firstname, String lastname, String address,
@@ -146,4 +153,36 @@ public class User {
 	public long getRoleID() {
 		return this.roleID;
 	}
+	public String getEmailVerificationHash() {
+		return emailVerificationHash;
+	}
+
+	public void setEmailVerificationHash(String emailVerificationHash) {
+		this.emailVerificationHash = emailVerificationHash;
+	}
+
+	public int getEmailVerificationAttmps() {
+		return emailVerificationAttmps;
+	}
+
+	public void setEmailVerificationAttmps(int emailVerificationAttmps) {
+		this.emailVerificationAttmps = emailVerificationAttmps;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
+	}
+
 }
