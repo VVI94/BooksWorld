@@ -5,7 +5,7 @@
 <link type="text/css" rel="stylesheet" href= "css/raiting.css"/>  
 <link type="text/css" rel="stylesheet" href= "css/cart.css"/>   
 
-    
+ <head>   
 <script type="text/javascript">
 $(function(){
 	var getUrlParameter = function getUrlParameter(sParam) {
@@ -38,9 +38,9 @@ $(function(){
 			isInFavourite = data;
 			
 			if(isInFavourite === 'true'){
-				result += "<a class=\"link\" ><i class=\"fa fa-heart fa-fw fa-3x\" ></i></a>";
+				result += "<a class=\"link\" ><b class=\"fa fa-heart fa-fw fa-3x\" ></b></a>";
 			}else{
-				result += "<a class=\"link\" ><i class=\"fa fa-heart-o fa-fw fa-3x\" ></i></a>";
+				result += "<a class=\"link\" ><b class=\"fa fa-heart-o fa-fw fa-3x\" ></b></a>";
 			}
 			
 			$("#fav").html(result);
@@ -92,7 +92,7 @@ display: inline;
 .img-holder {position: relative;}
 .img-holder .link {
     position: absolute;
-    bottom: 600px;
+    bottom: 650px;
     right: 0px; 
     color: red;
 }
@@ -105,50 +105,104 @@ display: inline;
     color: red;
 }
 
+#close{
+color: red;
+cursor: pointer;
+}
+
+#buyQuantity, #buyButton{
+	display:inline-block;
+    font-family:arial;
+    margin-top:25px;
+ 
+}
+
+ #buyButton{
+	display:inline-block;
+
+    margin-top:25px;
+}
+
+#bookTitle{
+ margin-bottom:50px;
+font-size: 60px;
+text-decoration: underline;
+}
+
+
 </style>
 
+<c:if test="${sessionScope.user == null}">
+	<meta http-equiv="refresh" content="0; url=http://localhost:8080/BooksWorld/error404.html" />
+</c:if>
+</head>
  <div class="container body-content span=8 offset=2">
-
-
+	<div align="center" class="row">
+					<header>
+						<h1 id ="bookTitle"><strong><i><c:out value="${book.title}"></c:out></i></strong></h1>
+					</header>
+	</div>						
 	<div class="row">
 		
 		<div style="float: left;" class="col-md-6" >
 		
 			<article>
 				<div align="center">
-					<header>
-						<c:out value="${book.title}"></c:out>
-					</header>	
+					
 					<div class="img-holder">		
-					<img height="650px" width="100%" src="avatar?photo=<c:out value="${book.photo}"></c:out>">
+					<img height="700px" width="100%" src="avatar?photo=<c:out value="${book.photo}"></c:out>">
 					<div id="fav" ></div>
 					</div>
 					
 				</div>	
-				<div align="left">
+					<div class="row">
+					
+					
+				<div class="col-md-6" align="left">
 				    <form>				     
-				       <div class="rating" >				        
-				         
-				           
+				       <div class="rating" >				        			           
 				       </div>				        
 				    </form>					
-				</div>		
+				</div>	
 				
+				
+				<div id="buyQuantity1" class="col-md-6" align="right">
+					<div class="col-md-12">
+						<input value ="1" id="buyQuantity" type="number" size="2" min ="1" max="99" onKeyUp="if(this.value>99){this.value='99';}else if(this.value<0){this.value='0';}">				
+					</div>
+				</div>	
+				</div>
 		 		
 			</article>
 		</div>
 				
 		<div style="float: right;" class="col-md-6" align="left">
-		
-		
+		<div class="row">
+			<div class="col-md-8" align="left">
+			 <h3><strong>Author:&nbsp;&nbsp;&nbsp; </strong><i><c:out value="${book.author.firstName}">
+			 </c:out> <c:out value="${book.author.lastName}"></c:out></i></h3>
+			
+			<h3><strong>Category:&nbsp;&nbsp;&nbsp; </strong><i><c:out value="${book.category}">
+			 </c:out></i></h3>
+			 
+			 <h3><strong>Year:&nbsp;&nbsp;&nbsp; </strong><i><c:out value="${book.year}">
+			 </c:out></i></h3>
+			
+			</div>
+			<div class="col-md-4" align="right">
 					<div class="img-holder1" align="right">		
 					<img height="100px" width="100" src="images/static/rating.jpg">
 					<a class="link" ><i id="avgRating" ></i></a>
 					</div>
+					<div align="left">
 					
-					
-				
-		
+					</div>
+			 
+			</div>	
+		</div>	
+			<h3><strong>Publisher:&nbsp;&nbsp;&nbsp; </strong><i><c:out value="${book.publisher}"></c:out></i></h3>
+			
+	
 		
 			<h3>Description:</h3>
 			<c:out value="${book.description}"></c:out>
@@ -156,17 +210,17 @@ display: inline;
 			
 	
 	</div>
-			<div align="right">
-				<input value ="1" id="buyQuantity" type="number" size="2" min ="1" max="99">				
-			</div>
+	
+			
 		
-			<div align="right">
+			<div class="col-md-12" align="right">
 				<button id="buyButton" class="button yellow" value="<c:out value='${book.id}'></c:out>">
 					<div class="tittle">Add to cart</div>
 					<div class="price"><c:out value="${book.price}" ></c:out><h6 class="BGN"> &nbsp; BGN</h6></div>
 				</button>
 			</div>
-
+		
+	
 	<div class="container body-content span=8 offset=2">
 		
 		
@@ -185,7 +239,7 @@ display: inline;
 	
 	</div>
 	
-	
+	<c:if test="${sessionScope.user.isAdmin()}">
 	<div  align="right" >
 		<form id="bloc2" action="UploadBook">
 			<input type="hidden" name="bookId" value="${book.id}">	    
@@ -196,7 +250,7 @@ display: inline;
 		    <input type="submit" class="btn btn-danger" value="Delete"/>
 		</form>
 	</div>
-
+	</c:if>
 </div>
 
 <script src='myscript.js'></script> 

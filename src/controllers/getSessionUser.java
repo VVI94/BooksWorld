@@ -22,8 +22,7 @@ public class getSessionUser extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		
 		User user = (User) request.getSession().getAttribute("user");
-		
-		response.getWriter().print(new Gson().toJson(user));
+		response.getWriter().print(new Gson().toJson(user.isAdmin()));
 	}
 
 

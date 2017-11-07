@@ -31,7 +31,7 @@ public class AdminDAO extends DAO implements IAdminDAO {
 	@Override
 	public void addAdmin(String username) throws SQLException, ValidationException, UnexistingException {
 		PreparedStatement ps = this.getCon()
-				.prepareStatement("SELECT username FROM users" + "	WHERE username = ?");
+				.prepareStatement("SELECT * FROM users" + "	WHERE username = ?");
 
 		ps.setString(1, username);
 
@@ -40,8 +40,8 @@ public class AdminDAO extends DAO implements IAdminDAO {
 		if (!result.next()) {
 			throw new UnexistingException("User with username: " + username + " doesn't exists");
 		}
-		
-		User user = new User(result.getLong(""), username ,result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar") );
+		long role = result.getLong("roles_role_id");
+		User user = new User(result.getLong(""), username ,result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar"), role );
 		user.setRoleID(2L);
 
 		

@@ -73,7 +73,7 @@ public class getLikesService extends HttpServlet {
 		try {
 			long authorId = CommentDAO.getInstance().getAuthorId(commentId);
 			
-			if(authorId == userId){				
+			if(authorId == userId){	
 				return;
 			}
 			

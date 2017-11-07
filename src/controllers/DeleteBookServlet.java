@@ -22,6 +22,8 @@ public class DeleteBookServlet extends HttpServlet {
 			return;
 		}
 		
+		
+		
 		long bookId = Long.parseLong(request.getParameter("bookId"));
 		
 		try {

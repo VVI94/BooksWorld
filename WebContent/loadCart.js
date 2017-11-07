@@ -1,7 +1,7 @@
 $(function() {
 		
 	loadBooksFromCart();
-	
+		
 	function loadBooksFromCart(){
 		
 		$.post('cart').then(function(stocks){
@@ -16,13 +16,13 @@ $(function() {
 				totSum += Number(stock.book.price) * Number(stock.quantity)
 				
 				result += "<div class=\"col-md-6\" align=\"center\">"
-					
+					result += "<header>"
+						result += "<strong><h3>"+stock.book.title+"</h3></strong>"
+					result += "</header>"
 				result += "<fieldset>"	
 				result += "<div class=\"col-md-4\" align=\"center\">"
 					result+= "<article>"
-						result += "<header>"
-						result +=stock.book.title
-						result += "</header>"
+						
 						result += "<a href=\"BookInfo?book="+stock.book.id+"\"> <img height=\"250px\" width=\"100%\" src=\"avatar?photo="+stock.book.photo+"\" ></a>"
 								  
 						result+= "</article>"			
@@ -31,9 +31,14 @@ $(function() {
 					 result += "<div class=\"col-md-1\" align=\"center\">" 					 
 					result += "</div>"
 						result += "<div class=\"col-md-6\" align=\"left\">" 
-							result += "<br>"
+						
+							
+							result += "<div clas=\"close\" align=\"right\">" 
 								
-							result += "<div clas=\"close\" align=\"right\"><i id = \"close\" name = \""+stock.book.id+"\" class=\"fa fa-times fa-fw fa-2x\" aria-hidden=\"true\"></i></div>"	
+							
+							result +="<i id = \"close\" name = \""+stock.book.id+"\" class=\"fa fa-times fa-fw fa-2x\" aria-hidden=\"true\">"				
+							
+							result += "</i></div>"
 							result += "<strong>Author: </strong><br>"
 							result += "<i>" +stock.book.author.firstName+"</i>";
 							result += " ";
@@ -46,7 +51,7 @@ $(function() {
 							result += "<h2 id=\"price\"><strong><i>&nbsp;&nbsp;&nbsp;"+stock.book.price.toFixed(2)+"&nbsp;</i></h2><sub>BGN</sub></strong>"
 							result += "<br><br>"
 							result += "<div id=\"price\" align=\"left\">"
-							result += "<input id=\""+stock.book.id+"\" name=\""+stock.book.price+"\" class=\"quantity\"  type =\"number\" min =\"1\" max=\"99\" value=\""+stock.quantity+"\">"						
+							result += "<input id=\""+stock.book.id+"\" name=\""+stock.book.price+"\" class=\"quantity\"  type =\"number\" min =\"1\" max=\"99\" value=\""+stock.quantity+"\" onKeyUp=\"if(this.value>99){this.value=\"99\";}else if(this.value<0){this.value=\"0\";}\">"						
 							result +="</div>"
 								result += "<div align=\"right\">"
 									var tot = (Number(stock.book.price) * Number(stock.quantity)).toFixed(2);
@@ -64,34 +69,10 @@ $(function() {
 			
 			printTotalSum(totSum)
 			
-			$('.fa').on('click', function() {
-				if (confirm('Are you sure?')) {
-					console.log($(this).attr('name'))
-					
-					
-						bookId = $(this).attr('name')
-					
-						var self = this;
-					
-					$.ajax({
-						url : 'cart?bookId=' + bookId,
-						type : 'DELETE',
-						success : function(result) {
-							$(self).parent().parent().parent().remove();
-							calcolateSum()
-							loadBooksFromCart()
-							getSize()
-						}
-						
-					});
-				}
-			});
-			
-			
+			removeBookFromCart()
 			
 			calcolateSum()
-			
-		
+					
 		});
 		
 		
@@ -105,6 +86,8 @@ $(function() {
 			var price = $(this).attr('name');
 			var quantity = $(this).val();
 			if(quantity > 0 && quantity <= 99){
+				
+						
 				var id = "price" + $(this).attr('id')
 				printTotal(quantity, price, id)
 				var sum = 0;
@@ -130,7 +113,8 @@ $(function() {
 				  	});
 				
 				 
-				  printTotalSum(sum)
+				  printTotalSum(sum)				  
+				  
 			}
 		})	
 	}
@@ -187,6 +171,31 @@ $(function() {
 			loadShopCart(data1);
 		
 		});				
+	}
+	
+	function removeBookFromCart(){
+		$('i').on('click', function() {
+			if (confirm('Are you sure?')) {
+				console.log($(this).attr('name'))
+				
+				
+					bookId = $(this).attr('name')
+				
+					var self = this;
+				
+				$.ajax({
+					url : 'cart?bookId=' + bookId,
+					type : 'DELETE',
+					success : function(result) {
+						$(self).parent().parent().parent().remove();
+						calcolateSum()
+						loadBooksFromCart()
+						getSize()
+					}
+					
+				});
+			}
+		});
 	}
 
 	getSize();	

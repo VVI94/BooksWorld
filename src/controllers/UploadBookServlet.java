@@ -46,7 +46,7 @@ public class UploadBookServlet extends HttpServlet {
 		String category = request.getParameter("category");
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
-		Part photo = request.getPart("image");
+		Part photo = request.getPart("dataFile");
 
 		String image = title + "_" + firstName + "_" + lastName + ".jpg";
 		File myFile = new File(BOOK_IMAGE_URL + image);
@@ -58,6 +58,9 @@ public class UploadBookServlet extends HttpServlet {
 			Book book = new Book(title, description, year, publisher, price, category, author, image);
 
 			if (photo.getSize() > 0) {
+				
+				validateMimeType(response, photo);
+						
 				try (InputStream input = photo.getInputStream()) {
 					File prevPhoto = new File(BOOK_IMAGE_URL + request.getParameter("bookPhoto"));
 					if (prevPhoto.exists()) {
@@ -88,8 +91,11 @@ public class UploadBookServlet extends HttpServlet {
 			}
 			e1.printStackTrace();
 			System.out.println(e1.getMessage());
+			response.sendRedirect("./error404.html");
 		}
 	}
+
+
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -104,7 +110,9 @@ public class UploadBookServlet extends HttpServlet {
 			try {
 				book = BookDAO.getInstance().getBook(Long.parseLong(request.getParameter("bookId")));
 			} catch (NumberFormatException | SQLException | UnexistingException | ValidationException e) {
-				
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+				response.sendRedirect("./error404.html");
 			}
 		}
 		
@@ -122,6 +130,15 @@ public class UploadBookServlet extends HttpServlet {
 		}
 
 
+	}
+	
+	private void validateMimeType(HttpServletResponse response, Part photo) throws IOException {
+		
+		
+		    
+		 
+		    
+		
 	}
 
 }

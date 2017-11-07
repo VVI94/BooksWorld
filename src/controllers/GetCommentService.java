@@ -85,5 +85,26 @@ public class GetCommentService extends HttpServlet {
 		}
 
 	}
+	
+	
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (!Validators.isAuthenticated(request, response) || !Validators.isAdmin(request, response)) {
+			return;
+		}
+		
+		System.out.println("minah proverkata");
+		long commentId = Long.parseLong(request.getParameter("commentId"));
+		
+		try {
+			CommentDAO.getInstance().delete(commentId);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+			response.sendRedirect("./error404.html");
+		}
+		
+	}
 
 }

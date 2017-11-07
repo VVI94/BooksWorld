@@ -15,14 +15,19 @@ $(function() {
 	        }
 	    }
 	};
-	
-// function getSessionUser(){
-// $.get('getSession').then(function(data) {
-// var user = data
-// console.log(user);
-// return user.id;
-// });
-// }
+	var bookId = getUrlParameter('book');
+	getSessionUserIsAdmin()
+	function getSessionUserIsAdmin(){
+		var admin = '';
+		 $.get('getSession').then(function(data) {
+		  admin = data
+		 console.log(admin);
+		 
+		 });
+	 
+	 
+	 
+	 //var isAdmin = getSessionUserIsAdmin()
 	
 	function loadComments(bookId) {
 		$.get('getComments?bookId=' + bookId).then( function(data) {
@@ -31,7 +36,7 @@ $(function() {
 			var comment ='';
 			
 			for (var index = 0; index < data.length; index++) {
-				comment = data[index];			
+				comment = data[index];						
 				result += "<div class=\"container\">"
 					result += "<div class=\"row\">"
 						result += "<div class=\"col-sm-8\">"
@@ -46,7 +51,16 @@ $(function() {
 											result += "<a href=\"#\"><b>"+comment.user.username+"</b></a> &nbsp; made a post."
 										result += "</div>"	
 										result += "<h6 class=\"text-muted time\">"+comment.date+"</h6>"																				
-									result += "</div>"									
+									result += "</div>"	
+										
+									result += "<div clas=\"close\" align=\"right\">";
+										console.log(admin);
+										if(admin){
+											console.log("admin sym be");
+											result +="<i id = \"close\" name = \""+comment.id+"\" class=\"fa fa-times fa-fw fa-2x\" aria-hidden=\"true\">"														
+										}
+										result +="</i></div>";
+										
 								result += "</div>"
 								
 								result += "<div class=\"post-description\" id=\"commentDescr\">"	
@@ -176,6 +190,8 @@ $(function() {
 				
 			$('#comments1').html(result);
 			
+			deleteComment();
+			
 			$('.like').on('click', function() {
 				
 				var input = $(this).attr('id');
@@ -229,8 +245,10 @@ $(function() {
 		
 	}
 		
-	var bookId = getUrlParameter('book');
+	
+
 	loadComments(bookId);
+	
 
 	function loadLikes(commentId, type){
 		$.get('getLikes?commentId=' + commentId + '&type=' + type).then( function(data) {
@@ -292,6 +310,14 @@ $(function() {
 									result += "<div class=\"panel-heading\">"
 										result += "<strong>"+reply.user.username+"</strong>"
 										result += "<span class=\"text-muted\"> &nbsp; commented on "+reply.date+"</span>"
+										
+										result += "<div clas=\"close\" align=\"right\">"
+												
+										if(admin){
+										result+= "<i value=\""+commentId+"\" id = \"close\" name = \""+reply.id+"\" class=\"fa fa-times fa-fw fa-2x\" aria-hidden=\"true\">"
+													
+										}
+										result+="</i></div>";
 									result += "</div>"
 									
 									result += "<div class=\"panel-body\">"
@@ -320,7 +346,7 @@ $(function() {
 			
 			var id = 'replies' + commentId;
 			$("#" + id).html(result);
-			
+			deleteComment();
 			
 			$('.likeReply').off().on('click', function() {
 				
@@ -349,7 +375,33 @@ $(function() {
 		});
 	}
 	
+	function deleteComment(){
+		
+		$('i').off().on('click', function() {
+			if (confirm('Are you sure?')) {
+				
+				var	commentId = $(this).attr('name')
+
+					var self = this;
+				
+				$.ajax({
+					url : 'getComments?' + '&commentId=' + commentId,
+					type : 'DELETE',
+					success : function(result) {
+						$(self).parent().parent().parent().remove();
+						
+						loadReplies(commentId)
+						loadComments(bookId)
+					}
+					
+				});
+			}
+		});
+		
+		
+	}
 	
+	};
 });
 
 

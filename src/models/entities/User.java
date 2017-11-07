@@ -50,9 +50,10 @@ public class User {
 //	}
 
 	public User(long id, String username, String password, String email, String firstname, String lastname, String address,
-			String telephone, String userAvatar) throws ValidationException {
+			String telephone, String userAvatar, long role) throws ValidationException {
 		this(username, password,  email, firstname, lastname, address, telephone, userAvatar);
 		this.id = id;
+		this.roleID = role;
 	}
 	
 	public String getUserAvatar() {
@@ -145,5 +146,13 @@ public class User {
 	}
 	public long getRoleID() {
 		return this.roleID;
+	}
+	
+	public boolean isAdmin(){
+		if(this.roleID == 2){
+			return true;
+		}else{			
+			return false;
+		}
 	}
 }

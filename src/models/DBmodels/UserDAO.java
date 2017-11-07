@@ -107,8 +107,8 @@ public class UserDAO extends DAO implements IUserDAO {
 		}
 		long userId = UserDAO.getInstance().getUserID(username, result.getString("email"), result.getString("first_name"),result.getString("last_name"));
 		//Role role = RoleDAO.getInstance().getRole(result.getLong("roles_role_id"));
-		
-		return new User(userId, result.getString("username"),result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar") );
+		long role = result.getLong("roles_role_id");
+		return new User(userId, result.getString("username"),result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar"), role );
 	}
 
 	@Override
@@ -176,8 +176,8 @@ public class UserDAO extends DAO implements IUserDAO {
 		if(!result.next()){
 			throw new UnexistingException("User with user id: " + userId + " doesn't exist!");
 		}
-		
-		return new User(userId, result.getString("username"),result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar") );
+		long role = result.getLong("roles_role_id");
+		return new User(userId, result.getString("username"),result.getString("password"), result.getString("email"), result.getString("first_name"), result.getString("last_name"), result.getString("address"),  result.getString("telephone"), result.getString("userAvatar"), role );
 	}
 	
 

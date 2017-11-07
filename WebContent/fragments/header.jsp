@@ -41,7 +41,7 @@ $(document).ready(function() {
             <div class="navbar navbar-default navbar-fixed-top text-uppercase">
                
                     <div class="navbar-header">
-                        <a href="./" class="btn btn-primary" ><i class="fa fa-home fa-fw fa-3x" aria-hidden="true"></i>&nbsp; Home</a>
+                        <a href="./" class="btn btn-primary" ><b class="fa fa-home fa-fw fa-3x" aria-hidden="true"></b>&nbsp; Home</a>
                     </div>
            
                      <div class="container">
@@ -63,25 +63,28 @@ $(document).ready(function() {
                             <a data-toggle="dropdown"  href="#"><i class="fa fa-user fa-fw"></i><c:out value="${sessionScope.user.username}"></c:out></a>
                            
 							  <ul class="dropdown-menu">
-							  	<li><a id="userOption" href="#"><i class="fa fa-eye fa-fw"></i> Profile</a></li>
-							  	<li><a id="userOption" href="./favouriteBooks"><i class="fa fa-heart fa-fw"></i> Favourites</a></li>
-							    <li><a id="userOption" href="./UploadBook"><i class="fa fa-pencil fa-fw"></i> Add new book</a></li>
-			<!--				<li><a id="userOption" href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li> -->
-			<!--			    <li><a id="userOption" href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li> 		-->
+							  	<li><a id="userOption" href="#"><b class="fa fa-eye fa-fw"></b> Profile</a></li>
+							  	<li><a id="userOption" href="./favouriteBooks"><b class="fa fa-heart fa-fw"></b> Favourites</a></li>
+							  	<c:if test="${sessionScope.user.isAdmin()}">
+							  	<li class="divider"></li>
+							    <li><a id="userOption" href="./UploadBook"><b class="fa fa-pencil fa-fw"></b> Add new book</a></li>
+								<li><a id="userOption" href="#"><b class="fa fa-trash-o fa-fw"></b> Delete</a></li> 
+							    <li><a id="userOption" href="#"><b class="fa fa-ban fa-fw"></b> Ban</a></li> 
+							    </c:if>
 							    <li class="divider"></li>
-							    <li><a id="userOption" href="./logout"><i class="fa fa-key fa-fw"></i> Logout</a></li>
+							    <li><a id="userOption" href="./logout"><b class="fa fa-key fa-fw"></b> Logout</a></li>
 							  </ul>
                                                       
                             </li>                                              
                             <li><a href="./cart" >
- 								<i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+ 								<b class="fa fa-shopping-cart fa-2x" aria-hidden="true"></b>
  							<!--	<sub><span id="cartBadge" class="badge">3</span></sub></a> -->
  								<sub><span id="cartBadge1"></span></sub></a>
  								</li> 
  								                             
                             </c:if>  
                             <c:if test="${sessionScope.user == null}">  
-                            <li><a href="#"><i class="fa fa-user fa-fw"></i>User</a></li>                   
+                            <li><a href="#"><b class="fa fa-user fa-fw"></b>User</a></li>                   
                             <li><a href="./login">Login</a></li>                               
                            </c:if>  
                         </ul>

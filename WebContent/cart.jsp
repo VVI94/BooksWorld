@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
+<head>
 <link type="text/css" rel="stylesheet" href= "css/cart.css"/>  
 <script type="text/javascript">
 	function numberLenght(){
@@ -45,7 +47,10 @@ cursor: pointer;
 }
 </style>
 
- 
+<c:if test="${sessionScope.user == null}">
+	<meta http-equiv="refresh" content="0; url=http://localhost:8080/BooksWorld/error404.html" />
+</c:if> 
+</head>
 
 <div class="container body-content span=8 offset=2">
 	
@@ -59,7 +64,7 @@ cursor: pointer;
 <br>
 <br>
 			<div align="right">
-				<button id="buyButton" class="button yellow" value="<c:out value='${book.id}'></c:out>">
+				<button id="buyButton22" class="button yellow" value="<c:out value='${book.id}'></c:out>">
 					<div class="tittle">BUY</div>
 					<div class="price"><h3 id ="totalBuy"></h3><h6 class="BGN"> &nbsp; BGN</h6></div>
 				</button>

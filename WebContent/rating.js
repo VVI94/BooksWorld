@@ -30,9 +30,7 @@ $(function() {
 			
 			
 			result += "<h3>"+avgRating.toFixed(1)+"</h3>"
-			
-			console.log("rating")
-			
+								
 			$('#avgRating').html(result);
 		});
 	}
@@ -99,7 +97,7 @@ $(function() {
 			$('.rating').html(result);
 			
 			$('.radio-btn').on('click', function() {
-				console.log($(this).val())
+				
 				var data = {
 						
 					rating: $(this).val(),
@@ -119,3 +117,4 @@ $(function() {
 	
 	
 });
+

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import exceptions.IntegerException;
 import exceptions.ValidationException;
+import models.entities.User;
 
 public class Validators {
 
@@ -53,6 +54,23 @@ public class Validators {
 			}
 		}
 
+	}
+	
+	
+	public static boolean isAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		try{		
+			User user =(User) (request.getSession().getAttribute("user"));
+
+			if(!user.isAdmin()){
+				System.out.println("ne sym admin");
+				return false;
+			}		
+			return true;
+		}catch (Exception e) {
+			response.sendRedirect("./error404.html");
+			return false;
+		}
+				
 	}
 
 }
