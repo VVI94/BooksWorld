@@ -6,10 +6,6 @@
 <link type="text/css" rel="stylesheet" href= "css/cart.css"/>   
 
     
-	<script src='myscript.js' type="text/javascript">
-
-	</script>
-	
 <script type="text/javascript">
 $(function(){
 	var getUrlParameter = function getUrlParameter(sParam) {
@@ -30,24 +26,8 @@ $(function(){
 	
 	var bookId = getUrlParameter('book');
 	
-	console.log(bookId);
 	
 	loadInFavouriteIcon()
-	
-		$('.link').on('clik',function(){
-		
-		var data  = {
-				id: bookId
-			
-			}; 
-					
-							
-				$.post('favourite', {data: JSON.stringify(data)}).then(function() {
-					loadInFavouriteIcon()
-				});
-			
-		
-	});
 	
 	
 	function loadInFavouriteIcon() {
@@ -84,11 +64,7 @@ $(function(){
 	}
 	
 });
-	function toFavourite(id){
-		console.log(id);
-		
-		
-	}
+
 </script>
 
 <style type="text/css">
@@ -121,6 +97,14 @@ display: inline;
     color: red;
 }
 
+.img-holder1 {position: relative;}
+.img-holder1 .link {
+    position: absolute;
+    bottom: 25px;
+    right: 35px; 
+    color: red;
+}
+
 </style>
 
  <div class="container body-content span=8 offset=2">
@@ -138,25 +122,15 @@ display: inline;
 					<div class="img-holder">		
 					<img height="650px" width="100%" src="avatar?photo=<c:out value="${book.photo}"></c:out>">
 					<div id="fav" ></div>
-				<!--	<a class="link" onclick="toFavourite(<c:out value="${book.id}"></c:out>)" ><i class="fa fa-heart-o fa-fw fa-3x" ></i></a>  -->
 					</div>
 					
 				</div>	
-				<div align="center">
+				<div align="left">
 				    <form>				     
 				       <div class="rating" >				        
-				            <input id="star5" name="star" type="radio" value="5" class="radio-btn hide" />
-				            <label for="star5">☆</label>
-				            <input id="star4" name="star" type="radio" value="4" class="radio-btn hide" />
-				            <label for="star4">☆</label>
-				            <input id="star3" name="star" type="radio" value="3" class="radio-btn hide" />
-				            <label for="star3">☆</label>
-				            <input id="star2" name="star" type="radio" value="2" class="radio-btn hide" />
-				            <label for="star2">☆</label>
-				            <input id="star1" name="star" type="radio" value="1" class="radio-btn hide" />
-				            <label for="star1">☆</label>
-				            <div class="clear"></div>
-				        </div>				        
+				         
+				           
+				       </div>				        
 				    </form>					
 				</div>		
 				
@@ -165,6 +139,17 @@ display: inline;
 		</div>
 				
 		<div style="float: right;" class="col-md-6" align="left">
+		
+		
+					<div class="img-holder1" align="right">		
+					<img height="100px" width="100" src="images/static/rating.jpg">
+					<a class="link" ><i id="avgRating" ></i></a>
+					</div>
+					
+					
+				
+		
+		
 			<h3>Description:</h3>
 			<c:out value="${book.description}"></c:out>
 		</div>
@@ -172,7 +157,11 @@ display: inline;
 	
 	</div>
 			<div align="right">
-				<button id="buyButton" class="button yellow">
+				<input value ="1" id="buyQuantity" type="number" size="2" min ="1" max="99">				
+			</div>
+		
+			<div align="right">
+				<button id="buyButton" class="button yellow" value="<c:out value='${book.id}'></c:out>">
 					<div class="tittle">Add to cart</div>
 					<div class="price"><c:out value="${book.price}" ></c:out><h6 class="BGN"> &nbsp; BGN</h6></div>
 				</button>
@@ -211,4 +200,6 @@ display: inline;
 </div>
 
 <script src='myscript.js'></script> 
+<script src='addToCart.js'></script> 
+<script src='rating.js'></script> 
 		

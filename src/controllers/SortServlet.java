@@ -79,7 +79,7 @@ public class SortServlet extends HttpServlet {
 				String isCheck = request.getParameter(entry.getKey());
 				if (isCheck != null) {
 					books.addAll(BookDAO.getInstance().getAllBooksByCategoryId(entry.getValue(), author, minYearInt,
-							maxYearInt, minPriceInt, maxPriceInt));
+							maxYearInt, minPriceInt, maxPriceInt, false, 0));
 					markCategories.add(entry.getKey());
 					emptySearchBy +="&"+entry.getKey()+"=true";
 					sb.append(entry.getKey()).append("=true&");
@@ -90,7 +90,7 @@ public class SortServlet extends HttpServlet {
 
 			if (!haveCheck && haveSort) {
 				books.addAll(BookDAO.getInstance().getAllBooksByCategoryId(0, author, minYearInt, maxYearInt,
-						minPriceInt, maxPriceInt));
+						minPriceInt, maxPriceInt, false, 0));
 
 			}
 

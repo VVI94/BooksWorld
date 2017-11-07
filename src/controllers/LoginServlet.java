@@ -2,16 +2,19 @@ package controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
 import models.DBmodels.UserDAO;
+import models.entities.Book;
 import models.entities.User;
 
 @WebServlet("/login")
@@ -37,7 +40,14 @@ public class LoginServlet extends HttpServlet {
 			
 				// update session
 				User user = UserDAO.getInstance().getUser(username);
-				request.getSession().setAttribute("user", user);
+				
+				HttpSession session = request.getSession();
+				
+				
+					session.setAttribute("shopCart", new HashMap<Book, Double>());
+					session.setAttribute("user", user);
+				
+			
 //				ServletContext application = getServletConfig().getServletContext();
 //				synchronized (application) {
 //					if (application.getAttribute("orders") == null) {

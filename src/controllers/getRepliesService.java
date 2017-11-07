@@ -49,10 +49,9 @@ public class getRepliesService extends HttpServlet {
 	protected synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(!Validators.isAuthenticated(request, response)){
-			System.out.println("tuka li sym1111");
+			
 			return;
 		}
-		System.out.println("tuka li smeeeeeeeeeeeeeeeeeeeeeeee");
 		User user = (User) request.getSession().getAttribute("user");
 
 		
@@ -60,7 +59,7 @@ public class getRepliesService extends HttpServlet {
 
 		Gson gson = new GsonBuilder().create();
 		JsonObject jobj = gson.fromJson(data, JsonObject.class);
-		System.out.println(jobj.toString());
+		
 		String commentId =jobj.get("commentId").getAsString();
 		
 		String content1 = jobj.get("name").getAsString();
@@ -69,8 +68,6 @@ public class getRepliesService extends HttpServlet {
 		
 		String content = content1.equals("")?content2:content1;
 		
-		System.out.println(commentId);
-		System.out.println(content);
 		
 		long commentId1 = Long.parseLong(commentId);
 		java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
