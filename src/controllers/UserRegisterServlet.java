@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +22,10 @@ import org.apache.tomcat.dbcp.dbcp2.Utils;
 
 import exceptions.UnexistingException;
 import exceptions.ValidationException;
+import models.BCrypt;
 import models.StatusPojo;
 import models.DBmodels.UserDAO;
+import models.entities.Book;
 import models.entities.SendRegistrationEmail;
 import models.entities.User;
 
@@ -66,7 +69,7 @@ public class UserRegisterServlet extends HttpServlet {
 
 		String userAvatar = username + "_" + firstname + "_" + lastname + ".jpg";
 
-		User user;
+		User user = null;
 		try {
 			user = new User(username, password, email, firstname, lastname, address, telephone, userAvatar);
 			File userFile = new File(USER_AVATAR_URL + userAvatar);
@@ -110,17 +113,22 @@ public class UserRegisterServlet extends HttpServlet {
 			response.sendRedirect("./Register?error=" + e.getMessage());
 		}
 
-		String hash = Utils.prepareRandomString(30);
+		String hash = models.Utils.prepareRandomString(30);
 
 		// generate hash for password
-		user.setEmailVerificationHash((BCrypt.hashpw(hash, GlobalConstants.SALT));
+		user.setEmailVerificationHash((BCrypt.hashpw(hash, "$2a$10$DOWSDz/CyKaJ40hslrk5fe")));
 		StatusPojo sp = new StatusPojo();
 		String output = "";
 
-		SendRegistrationEmail.generateAndSendEmail(id, email, hash);
+		try {
+			SendRegistrationEmail.generateAndSendEmail(email, hash);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		sp.setCode(0);
 		sp.setMessage("Registation Link Was Sent To Your Mail Successfully. Please Verify Your Email");
-		output = Utils.toJson(sp);
+		output = models.Utils.toJson(sp);
 
 		// send output to user
 		PrintWriter pw = response.getWriter();

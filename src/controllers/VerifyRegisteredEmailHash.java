@@ -38,7 +38,7 @@ public class VerifyRegisteredEmailHash extends HttpServlet {
             // verify with database
             if(UserDAO.verifyEmailHash(userId, hash) && scope.equals("active")) {
                //update status as active
-               UserDAO.updateStaus(userId, "active");
+               UserDAO.updateStatus(userId, "active");
                message = "Email verified successfully. Account was activated. Clic <a href=\"login.html\">here</a> to login";
             } else {
                //now increment verification attempts 
@@ -47,14 +47,14 @@ public class VerifyRegisteredEmailHash extends HttpServlet {
                    // reset verification code if attempts equal to 20 
                    String hashcode = Utils.prepareRandomString(30);
                    UserDAO.updateEmailVerificationHash(userId, BCrypt.hashpw(hashcode, "$2a$10$DOWSDz/CyKaJ40hslrk5fe"));
-                   UserPojo up = UserDAO.selectUSER(userId);
+                   UserPojo up = UserDAO.getInstance().getUser(userId);
                    MailUtil.sendEmailRegistrationLink(userId, up.getEMAIL(), hashcode);
                    message = "20 times Wrong Email Validation Input Given. So we are sent new activation link to your Email";
                } else {
                    message = "Wrong Email Validation Input";   
                }
             }
-        } catch (DBException e) {
+        } catch (DException e) {
             e.printStackTrace();
             message = e.getMessage();
         } catch (AddressException e) {

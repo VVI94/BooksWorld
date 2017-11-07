@@ -59,7 +59,7 @@ public class SendRegistrationEmail {
 	// e.printStackTrace();
 	// }
 	// }
-	public static void generateAndSendEmail(String id, String email, String hash)
+	public static void generateAndSendEmail(String email, String hash)
 			throws AddressException, MessagingException {
 
 		// Step1
@@ -70,7 +70,7 @@ public class SendRegistrationEmail {
 		mailServerProperties.put("mail.smtp.starttls.enable", "true");
 		System.out.println("Mail Server Properties have been setup successfully..");
 
-		String link = DBManager.getInstance().getMAIL_REGISTRATION_SITE_LINK() + "?scope=activation&userId=" + id
+		String link = DBManager.getInstance().getMAIL_REGISTRATION_SITE_LINK() + "?scope=activation&userId="
 				+ "&hash=" + hash;
 
 		StringBuilder bodyText = new StringBuilder();

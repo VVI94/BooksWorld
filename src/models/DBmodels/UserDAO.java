@@ -189,6 +189,16 @@ public class UserDAO extends DAO implements IUserDAO {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static void updateStatus(String userId, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static boolean verifyEmailHash(String userId, String hash) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 }
