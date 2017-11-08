@@ -5,12 +5,12 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.38-bin.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jstl-1.2.jar"/>
-
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/gson-2.6.2.jar"/>
-
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.mail.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/activation.jar"/>
-
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aws-java-sdk-1.11.226-javadoc.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aws-java-sdk-1.11.226-sources.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aws-java-sdk-1.11.226.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
