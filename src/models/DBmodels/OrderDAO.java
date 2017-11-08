@@ -167,6 +167,7 @@ public class OrderDAO extends DAO implements IOrderDAO {
 
 	@Override
 	public Map<Book, Integer> getAllProducts(long orderId) throws SQLException, UnexistingException, ValidationException {
+		Map<Book, Integer> allProductsInOrder = new HashMap<Book,Integer>();
 		PreparedStatement ps = this.getCon()
 				.prepareStatement("SELECT * FROM books_has_orders WHERE orders_orders_id = ? ");
 		ps.setLong(1, orderId);
@@ -177,6 +178,8 @@ public class OrderDAO extends DAO implements IOrderDAO {
 			BookDAO.getInstance().getBook(bookId);
 
 		}
+		
+		return allProductsInOrder;
 
 	}
 
